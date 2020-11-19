@@ -1,8 +1,11 @@
 ﻿
 using System;
 using System.IO;
+using System.Threading;
 using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
+using System.Diagnostics;
+
 
 
 
@@ -32,7 +35,7 @@ namespace easySave
                         long length = new FileInfo(file).Length;
                         DateTime lastAccess = File.GetLastAccessTime(file);
 
-                        DataLog datalog = new DataLog(nbrFile,fileName,Jobname, lastAccess, length);   // Convert the File's information to Json
+                        DataLog datalog = new DataLog(nbrFile,fileName,Jobname, lastAccess, length);   // Convert the File information to Json
                         string JsonDatalog = JsonConvert.SerializeObject(datalog);
                      
                         LogFile.WriteLine(JsonDatalog);                                                // Put the Json Format infomration into Log file
@@ -40,8 +43,20 @@ namespace easySave
                 }      
             }
 
+            var timer = new Stopwatch();       // Calculate time 
+            timer.Start();
+
             FileSystem.CopyDirectory(sourcePath, destPath, UIOption.AllDialogs);           // Copy all source files to destination
+            timer.Stop();
+            
+
+            for (int i = 0; i <= timer.ElapsedMilliseconds; i++)
+            {
+                Console.Write($"\rProgress: {i} %   ");
+                Thread.Sleep(25);
+            }
         }
+
 
 
 

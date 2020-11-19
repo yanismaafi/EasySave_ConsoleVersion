@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Drawing;
+
 
 
 namespace easySave
@@ -22,9 +24,20 @@ namespace easySave
 
             do
                 {
+                
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\n\n\n");
+                    Console.WriteLine("\t\t\t _______  _______  _______  __   __    _______  _______  __   __  _______");
+                    Console.WriteLine("\t\t\t|       ||   _   ||       ||  | |  |  |       ||   _   ||  | |  ||       |");
+                    Console.WriteLine("\t\t\t|    ___||  |_|  ||  _____||  |_|  |  |  _____||  |_|  ||  |_|  ||    ___|");
+                    Console.WriteLine("\t\t\t|   |___ |       || |_____ |       |  | |_____ |       ||       ||   |___");
+                    Console.WriteLine("\t\t\t|    ___||       ||_____  ||_     _|  |_____  ||       ||       ||    ___|");
+                    Console.WriteLine("\t\t\t|   |___ |   _   | _____| |  |   |     _____| ||   _   | |     | |   |___");
+                    Console.WriteLine("\t\t\t|_______||__| |__||_______|  |___|    |_______||__| |__|  |___|  |_______| \n");
 
+                    Console.WriteLine("\n\t\t\t\t\t\t Welcome to EasySave !  \n");
 
-                    Console.WriteLine("\n Welcome to EasySave !  \n");
+                    Console.ResetColor();
 
                     Console.WriteLine("\n Please Select an Option : \n");
 
