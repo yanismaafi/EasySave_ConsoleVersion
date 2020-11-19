@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "ck4dqc+Ei+vT7N8Ii5kmhBhuQWhSOZad5hTptZo9VemY9DGkK1cBwwjjgli9lf1SAu2/RD2LIxBpXH8h5LskWA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ASUS\\Desktop\\Yanis\\easySave\\easySave.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ASUS\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
