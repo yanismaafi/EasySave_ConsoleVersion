@@ -6,7 +6,9 @@ namespace easySave
     {
         static void Main(string[] args)
         {
+
             Menu console = new Menu();
+            console.frameMenu();
             console.MenuConsole();
         }
     }
