@@ -33,7 +33,7 @@ namespace easySave
 
             File file = new File();
 
-            if (file.checkExistence(path) != true)
+            if (file.checkExistence(path) != true)                // if file doesn't exist create a new file and write information
             {
                 using (StreamWriter jsonFile =  System.IO.File.CreateText(path))
                 {
@@ -41,7 +41,7 @@ namespace easySave
                 }
 
             }
-            else
+            else                                                 // else (file exist) append information
             {
                 using (StreamWriter jsonFile = System.IO.File.AppendText(path))
                 {

@@ -15,12 +15,12 @@ namespace easySave
         {
 
                 int options = 0;
-                int typeOfJob = 0;
+                int typeOftask = 0;
 
-                string job_name = string.Empty;
-                string job_sourcePath = string.Empty; ;
-                string job_targetPath = string.Empty; ;
-                string job_type = string.Empty;
+                string task_name = string.Empty;
+                string task_sourcePath = string.Empty; ;
+                string task_targetPath = string.Empty; ;
+                string task_type = string.Empty;
 
                 string taskInformationFile = "C:\\Users\\ASUS\\Desktop\\Task\\Task's_Details.json";
 
@@ -57,28 +57,28 @@ namespace easySave
 
                             Console.WriteLine("\n Create a new task ! \n");
                             Console.Write("\n give us a name for your task : ");
-                            job_name = Console.ReadLine();
+                            task_name = Console.ReadLine();
 
                             Console.Write("\n give us the source path of the directory you wanna copy :  ");
-                            job_sourcePath = Console.ReadLine();
+                            task_sourcePath = Console.ReadLine();
 
                             Console.Write("\n give us the destination path :  ");
-                            job_targetPath = Console.ReadLine();
+                            task_targetPath = Console.ReadLine();
 
                             Console.WriteLine("\n give the type of the task \n<1>: Complete. \n<2>: Differential : ");
                            
                             do
                             {
-                                typeOfJob = Convert.ToInt32(Console.ReadLine());
+                                typeOftask = Convert.ToInt32(Console.ReadLine());
 
-                                if (typeOfJob == 1)
+                                if (typeOftask == 1)
                                 {
-                                    job_type = "complete";
+                                    task_type = "complete";
                                     break;
                                 }
-                                else if (typeOfJob == 2)
+                                else if (typeOftask == 2)
                                 {
-                                    job_type = "differential";
+                                    task_type = "differential";
                                     break;
                                 }
                                 else
@@ -86,14 +86,14 @@ namespace easySave
                                     Console.WriteLine("\n Error invalid task type ! \n ");
                                 }
 
-                            } while (typeOfJob != 1 || typeOfJob != 2);
+                            } while (typeOftask != 1 || typeOftask != 2);
 
                              Console.WriteLine("\n task saved ! \n");
-                             Console.WriteLine($"\n name : {job_name} \n \n source Path : {job_sourcePath}  \n \n destination path : {job_targetPath} \n \n task type : {job_type} \n ");
+                             Console.WriteLine($"\n name : {task_name} \n \n source Path : {task_sourcePath}  \n \n destination path : {task_targetPath} \n \n task type : {task_type} \n ");
 
-                             Json convert = new Json();       //Convert information's job to json format 
-                             string informationsJob = convert.ConvertToJson(job_name, job_sourcePath, job_targetPath, job_type);
-                             convert.CreateFileJson(informationsJob);  // Put json infromation into file 
+                             Json convert = new Json();       //Convert information's task to json format 
+                             string informationstask = convert.ConvertToJson(task_name, task_sourcePath, task_targetPath, task_type);
+                             convert.CreateFileJson(informationstask);  // Put json infromation into file 
                            
                              
 
@@ -104,20 +104,20 @@ namespace easySave
                             Console.WriteLine("\n Execute a specific Task ! \n ");
 
                             Console.WriteLine("\n Name of the task tou want to execute :");
-                            job_name = Console.ReadLine();
+                            task_name = Console.ReadLine();
 
                             File file = new File();
 
                             string textFile = file.getFileContent(taskInformationFile);
-                           // file.findTaskName(textFile, job_name);
+                           // file.findTaskName(textFile, task_name);
 
-                            if ( file.findTaskName(textFile, job_name) == true )         // If task name exists into task's informations file 
+                            if ( file.findTaskName(textFile, task_name) == true )         // If task name exists into task's informations file 
                             {
-                                string source = file.getSourcePath(taskInformationFile, job_name);
-                                string destination = file.getDestinationPath(taskInformationFile, job_name);
+                                string source = file.getSourcePath(taskInformationFile, task_name);
+                                string destination = file.getDestinationPath(taskInformationFile, task_name);
 
                                 CopyFile copyTask = new CopyFile();
-                                copyTask.Copy(source, destination, job_name);
+                                copyTask.Copy(source, destination, task_name);
 
                             }else {  Console.WriteLine(" \n Task doesn't exist. \n"); }
 
@@ -128,7 +128,7 @@ namespace easySave
                         case 3:
 
                             CopyFile Files = new CopyFile();
-                            Files.Copy(job_sourcePath, job_targetPath, job_name);
+                            Files.Copy(task_sourcePath, task_targetPath, task_name);
 
 
                         break;

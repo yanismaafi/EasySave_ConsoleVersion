@@ -12,32 +12,69 @@ namespace easySave
     class CopyFile
     {
 
-        public void Copy(string sourcePath, string destPath, string Jobname)  
+        public static int nbrFile;
+
+
+        public void Copy(string sourcePath, string destPath, string taskname)  
         {
             string fileName;
-            string LogPath = "C:\\Users\\ASUS\\Desktop\\Task\\LogFile.json";
-            int nbrFile = 0;
-
+            string LogPath = "C:\\Users\\ASUS\\Desktop\\Task\\LogFile.json";     // Log File path
+            
 
             string[] filePaths = Directory.GetFiles(sourcePath);                 // List of all paths files existing into source
 
-            using (StreamWriter LogFile = System.IO.File.CreateText(LogPath))   // Creating our File Log
+            File FILE = new File();
+
+            if (FILE.checkExistence(LogPath) != true)
             {
-                foreach (string file in filePaths)                  // Loop on files path
+                      // Creating our File Log
+
+                    using (StreamWriter LogFile = System.IO.File.CreateText(LogPath))   
+                    {
+                        foreach (string file in filePaths)                  // Loop on files path
+                        {
+                            nbrFile++;
+
+                            fileName = Path.GetFileName(file);
+                            string destFile = Path.Combine(destPath, fileName);          // Extract all informations about files (size, name, extention ...)
+                            string extention = Path.GetExtension(file);
+                            long length = new System.IO.FileInfo(file).Length;
+                            DateTime lastAccess = System.IO.File.GetLastAccessTime(file);
+
+                            DataLog datalog = new DataLog(nbrFile, fileName, taskname, lastAccess, length);   // Convert the File information to Json
+                            string JsonDatalog = JsonConvert.SerializeObject(datalog);
+
+                            LogFile.WriteLine(JsonDatalog);                                                // Put the Json Format infomration into Log file      
+                        }
+                    }
+          
+            }else
+            {
+                   // Opening our File Log
+
+                using ( StreamWriter LogFile = System.IO.File.AppendText(LogPath))
                 {
+
+                    foreach (string file in filePaths)                  // Loop on files path
+                    {
                         nbrFile++;
 
-                        fileName = Path.GetFileName(file);                               
+                        fileName = Path.GetFileName(file);
                         string destFile = Path.Combine(destPath, fileName);          // Extract all informations about files (size, name...)
                         long length = new System.IO.FileInfo(file).Length;
                         DateTime lastAccess = System.IO.File.GetLastAccessTime(file);
 
-                        DataLog datalog = new DataLog(nbrFile,fileName,Jobname, lastAccess, length);   // Convert the File information to Json
+                        DataLog datalog = new DataLog(nbrFile, fileName, taskname, lastAccess, length);   // Convert the File information to Json
                         string JsonDatalog = JsonConvert.SerializeObject(datalog);
-                     
+
                         LogFile.WriteLine(JsonDatalog);                                                // Put the Json Format infomration into Log file      
-                }      
+                    }
+
+                }
             }
+
+
+
 
             var timer = new Stopwatch();       // Calculate copy time 
             timer.Start();

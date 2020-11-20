@@ -10,13 +10,13 @@ namespace easySave
         public string FileName;
         public long size;
         public DateTime LastAccess;
-        public string belongsJob;
+        public string belongstask;
 
-        public DataLog(int FileNumber, string FileName, string belongsJob, DateTime LastAccess, long size)  //
+        public DataLog(int FileNumber, string FileName, string belongstask, DateTime LastAccess, long size)  //
         {
             this.FileNumber = FileNumber;
             this.FileName = FileName;
-            this.belongsJob = belongsJob;
+            this.belongstask = belongstask;
             this.LastAccess = LastAccess;
             this.size = size;
 
