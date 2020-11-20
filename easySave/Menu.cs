@@ -20,7 +20,9 @@ namespace easySave
                 string job_name = string.Empty;
                 string job_sourcePath = string.Empty; ;
                 string job_targetPath = string.Empty; ;
-                string job_type = string.Empty; ;
+                string job_type = string.Empty;
+
+                string taskInformationFile = "C:\\Users\\ASUS\\Desktop\\Task\\Task's_Details.json";
 
             do
                 {
@@ -41,9 +43,9 @@ namespace easySave
 
                     Console.WriteLine("\n Please Select an Option : \n");
 
-                    Console.WriteLine("\n 1- Create a job \n");
-                    Console.WriteLine("\n 2- Execute a specific job \n");
-                    Console.WriteLine("\n 3- Execute all jobs \n");
+                    Console.WriteLine("\n 1- Create a task \n");
+                    Console.WriteLine("\n 2- Execute a specific Task \n");
+                    Console.WriteLine("\n 3- Execute all Tasks \n");
                     Console.WriteLine("\n 4- Exit \n");
 
                     options = Convert.ToInt32(Console.ReadLine());
@@ -53,8 +55,8 @@ namespace easySave
                     {
                         case 1:
 
-                            Console.WriteLine("\n Create a new job ! \n");
-                            Console.Write("\n give us a name for your job : ");
+                            Console.WriteLine("\n Create a new task ! \n");
+                            Console.Write("\n give us a name for your task : ");
                             job_name = Console.ReadLine();
 
                             Console.Write("\n give us the source path of the directory you wanna copy :  ");
@@ -63,7 +65,7 @@ namespace easySave
                             Console.Write("\n give us the destination path :  ");
                             job_targetPath = Console.ReadLine();
 
-                            Console.WriteLine("\n give the type of the job <1>:complete <2>:differential : ");
+                            Console.WriteLine("\n give the type of the task \n<1>: Complete. \n<2>: Differential : ");
                            
                             do
                             {
@@ -81,13 +83,13 @@ namespace easySave
                                 }
                                 else
                                 {
-                                    Console.WriteLine("\n Error invalid job type ! \n ");
+                                    Console.WriteLine("\n Error invalid task type ! \n ");
                                 }
 
                             } while (typeOfJob != 1 || typeOfJob != 2);
 
-                             Console.WriteLine("\n Job saved ! \n");
-                             Console.WriteLine($"\n name : {job_name} \n \n source Path : {job_sourcePath}  \n \n destination path : {job_targetPath} \n \n job type : {job_type} \n ");
+                             Console.WriteLine("\n task saved ! \n");
+                             Console.WriteLine($"\n name : {job_name} \n \n source Path : {job_sourcePath}  \n \n destination path : {job_targetPath} \n \n task type : {job_type} \n ");
 
                              Json convert = new Json();       //Convert information's job to json format 
                              string informationsJob = convert.ConvertToJson(job_name, job_sourcePath, job_targetPath, job_type);
@@ -98,27 +100,38 @@ namespace easySave
                         break;
 
                         case 2:
-                            Console.WriteLine("\n Execute a specific job ! \n ");
-                            break;
+
+                            Console.WriteLine("\n Execute a specific Task ! \n ");
+
+                            Console.WriteLine("\n Name of the task tou want to execute :");
+                            job_name = Console.ReadLine();
+
+                            File file = new File();
+
+                            string textFile = file.getFileContent(taskInformationFile);
+                           // file.findTaskName(textFile, job_name);
+
+                            if ( file.findTaskName(textFile, job_name) == true )         // If task name exists into task's informations file 
+                            {
+                                string source = file.getSourcePath(taskInformationFile, job_name);
+                                string destination = file.getDestinationPath(taskInformationFile, job_name);
+
+                                CopyFile copyTask = new CopyFile();
+                                copyTask.Copy(source, destination, job_name);
+
+                            }else {  Console.WriteLine(" \n Task doesn't exist. \n"); }
+
+
+
+                        break;
 
                         case 3:
 
                             CopyFile Files = new CopyFile();
                             Files.Copy(job_sourcePath, job_targetPath, job_name);
 
-                          /*  Console.WriteLine("\n Execute all jobs !\n ");
-                            CopyFile Files = new CopyFile();
 
-                            if(Files.checkExistence(job_targetPath) == false)
-                            {
-                             
-                                 Files.Copy(job_sourcePath, job_targetPath,job_name);
-                           
-                            } else { Console.WriteLine("Le fichier existe deja"); }
-
-                        */
-
-                            break;
+                        break;
                         case 4:
 
                               Environment.Exit(0);

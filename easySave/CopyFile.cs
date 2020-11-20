@@ -15,7 +15,7 @@ namespace easySave
         public void Copy(string sourcePath, string destPath, string Jobname)  
         {
             string fileName;
-            string LogPath = "C:\\Users\\ASUS\\Desktop\\JOB\\LogFile.json";
+            string LogPath = "C:\\Users\\ASUS\\Desktop\\Task\\LogFile.json";
             int nbrFile = 0;
 
 
@@ -29,14 +29,13 @@ namespace easySave
 
                         fileName = Path.GetFileName(file);                               
                         string destFile = Path.Combine(destPath, fileName);          // Extract all informations about files (size, name...)
-                        long length = new FileInfo(file).Length;
-                        DateTime lastAccess = File.GetLastAccessTime(file);
+                        long length = new System.IO.FileInfo(file).Length;
+                        DateTime lastAccess = System.IO.File.GetLastAccessTime(file);
 
                         DataLog datalog = new DataLog(nbrFile,fileName,Jobname, lastAccess, length);   // Convert the File information to Json
                         string JsonDatalog = JsonConvert.SerializeObject(datalog);
                      
-                        LogFile.WriteLine(JsonDatalog);                                                // Put the Json Format infomration into Log file
-                      
+                        LogFile.WriteLine(JsonDatalog);                                                // Put the Json Format infomration into Log file      
                 }      
             }
 
@@ -50,7 +49,7 @@ namespace easySave
 
             for (int i = 0; i <= timer.ElapsedMilliseconds; i++)
             {
-                Console.Write($"\n PROGRESS : {i} %   ");       // Progress Bar
+                Console.Write($"\r PROGRESS : {i} %   ");       // Progress Bar
                 Thread.Sleep(2);
             }
 

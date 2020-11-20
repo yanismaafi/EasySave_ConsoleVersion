@@ -10,6 +10,7 @@ namespace easySave
     class Json
     {
         
+
         public string ConvertToJson (string name, string source, string destination, string type)   //Convert data to Json format
         {
 
@@ -23,15 +24,30 @@ namespace easySave
         }
 
 
+        
 
 
         public void CreateFileJson (string information)    // Create json File and write json content (information's about the job)
         {
-            string path = "C:\\Users\\ASUS\\Desktop\\JOB\\job's_Details.json";
+            string path = "C:\\Users\\ASUS\\Desktop\\Task\\Task's_Details.json";
 
-            using (StreamWriter jsonFile = System.IO.File.CreateText(path))  
+            File file = new File();
+
+            if (file.checkExistence(path) != true)
             {
-                jsonFile.WriteLine(information);
+                using (StreamWriter jsonFile =  System.IO.File.CreateText(path))
+                {
+                    jsonFile.WriteLine(information);
+                }
+
+            }
+            else
+            {
+                using (StreamWriter jsonFile = System.IO.File.AppendText(path))
+                {
+                    jsonFile.WriteLine(information);
+                }
+
             }
 
         }
