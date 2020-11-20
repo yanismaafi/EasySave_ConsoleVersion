@@ -86,7 +86,7 @@ namespace easySave
 
             for (int i = 0; i <= timer.ElapsedMilliseconds; i++)
             {
-                Console.Write($"\r PROGRESS : {i} %   ");       // Progress Bar
+                Console.Write($"\r PROGRESS : {i} %  ");       // Progress Bar
                 Thread.Sleep(2);
             }
 

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Drawing;
-
-
+using System.Threading;
 
 namespace easySave
 {
@@ -24,13 +23,14 @@ namespace easySave
 
                 string taskInformationFile = "C:\\Users\\ASUS\\Desktop\\Task\\Task's_Details.json";
 
+
             do
                 {
                 
+                    
                     Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine("\n\n\n");
-
-
+                    Console.WriteLine("\n\n\n\n");
+                    frameMenu();
 
                     Console.WriteLine("\t\t\t  ███████╗ █████╗ ███████╗██╗   ██╗    ███████╗ █████╗ ██╗   ██╗███████╗ ");
                     Console.WriteLine("\t\t\t  ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝    ██╔════╝██╔══██╗██║   ██║██╔════╝");
@@ -43,6 +43,8 @@ namespace easySave
 
                     Console.ResetColor();
 
+ 
+
                     Console.WriteLine("\n\t Please Select an Option : \n");
 
                     Console.WriteLine("\n\t 1- Create a task \n");
@@ -53,11 +55,12 @@ namespace easySave
                     options = Convert.ToInt32(Console.ReadLine());
 
 
-                    switch (options)
+
+                switch (options)
                     {
                         case 1:
 
-                            Console.WriteLine("\n\t Create a new task ! \n");
+                            Console.WriteLine("\n\n\n\n\n\t Create a new task ! \n");
                             Console.Write("\n\t give us a name for your task : ");
                             task_name = Console.ReadLine();
 
@@ -75,12 +78,12 @@ namespace easySave
 
                                 if (typeOftask == 1)
                                 {
-                                    task_type = "complete";
+                                    task_type = "Complete";
                                     break;
                                 }
                                 else if (typeOftask == 2)
                                 {
-                                    task_type = "differential";
+                                    task_type = "Differential";
                                     break;
                                 }
                                 else
@@ -91,6 +94,7 @@ namespace easySave
                             } while (typeOftask != 1 || typeOftask != 2);
 
                              Console.WriteLine("\n\t task saved ! \n");
+                             Thread.Sleep(3000);
                              Console.WriteLine($"\n\t name : {task_name} \n \n source Path : {task_sourcePath}  \n \n destination path : {task_targetPath} \n \n task type : {task_type} \n ");
 
                              Json convert = new Json();       //Convert information's task to json format 
@@ -160,6 +164,7 @@ namespace easySave
                 int yMax = Console.WindowHeight;
                 int xMax = Console.WindowWidth;
                 char[,] characters = new char[Console.WindowWidth, Console.WindowHeight];
+                Console.WriteLine("\n");
 
                 for (int i = 0; i < Console.WindowWidth; i++)
                 {

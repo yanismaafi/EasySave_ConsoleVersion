@@ -18,14 +18,11 @@ namespace easySave
            
             string jsonResult = JsonConvert.SerializeObject(newWork);
 
-            Console.WriteLine($"\n The Json Format result : \n" + jsonResult);
-
             return jsonResult;
         }
 
 
         
-
 
         public void CreateFileJson (string information)    // Create json File and write json content (information's about the job)
         {

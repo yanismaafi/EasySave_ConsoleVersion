@@ -8,6 +8,7 @@ namespace easySave
         {
 
             Menu console = new Menu();
+            Console.Title = "Easy Save";
             console.frameMenu();
             console.MenuConsole();
         }
