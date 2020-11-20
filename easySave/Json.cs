@@ -24,7 +24,7 @@ namespace easySave
 
         
 
-        public void CreateFileJson (string information)    // Create json File and write json content (information's about the job)
+        public void CreateFileJson (string information)       // Create json File and write json content (information's about the job)
         {
             string path = "C:\\Users\\ASUS\\Desktop\\Task\\Task's_Details.json";
 
@@ -38,7 +38,7 @@ namespace easySave
                 }
 
             }
-            else                                                 // else (file exist) append information
+            else                                                 // else (File exist) append information
             {
                 using (StreamWriter jsonFile = System.IO.File.AppendText(path))
                 {

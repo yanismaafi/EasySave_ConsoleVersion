@@ -41,7 +41,7 @@ namespace easySave
                             long length = new System.IO.FileInfo(file).Length;
                             DateTime lastAccess = System.IO.File.GetLastAccessTime(file);
 
-                            DataLog datalog = new DataLog(nbrFile, fileName, taskname, lastAccess, length);   // Convert the File information to Json
+                            DataLog datalog = new DataLog(nbrFile, fileName, taskname, lastAccess, length, extention);   // Convert the File information to Json
                             string JsonDatalog = JsonConvert.SerializeObject(datalog);
 
                             LogFile.WriteLine(JsonDatalog);                                                // Put the Json Format infomration into Log file      
@@ -50,7 +50,7 @@ namespace easySave
           
             }else
             {
-                   // Opening our File Log
+                   // else if the File log exist , Opening our File Log
 
                 using ( StreamWriter LogFile = System.IO.File.AppendText(LogPath))
                 {
@@ -61,10 +61,11 @@ namespace easySave
 
                         fileName = Path.GetFileName(file);
                         string destFile = Path.Combine(destPath, fileName);          // Extract all informations about files (size, name...)
+                        string extention = Path.GetExtension(file);
                         long length = new System.IO.FileInfo(file).Length;
                         DateTime lastAccess = System.IO.File.GetLastAccessTime(file);
 
-                        DataLog datalog = new DataLog(nbrFile, fileName, taskname, lastAccess, length);   // Convert the File information to Json
+                        DataLog datalog = new DataLog(nbrFile, fileName, taskname, lastAccess, length, extention);   // Convert the File information to Json
                         string JsonDatalog = JsonConvert.SerializeObject(datalog);
 
                         LogFile.WriteLine(JsonDatalog);                                                // Put the Json Format infomration into Log file      

@@ -26,12 +26,11 @@ namespace easySave
 
             do
                 {
-                
-                    
+             
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine("\n\n\n\n");
-                    frameMenu();
 
+                   
                     Console.WriteLine("\t\t\t  ███████╗ █████╗ ███████╗██╗   ██╗    ███████╗ █████╗ ██╗   ██╗███████╗ ");
                     Console.WriteLine("\t\t\t  ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝    ██╔════╝██╔══██╗██║   ██║██╔════╝");
                     Console.WriteLine("\t\t\t  █████╗  ███████║███████╗ ╚████╔╝     ███████╗███████║██║   ██║█████╗ ");
@@ -43,34 +42,50 @@ namespace easySave
 
                     Console.ResetColor();
 
- 
-
-                    Console.WriteLine("\n\t Please Select an Option : \n");
-
-                    Console.WriteLine("\n\t 1- Create a task \n");
-                    Console.WriteLine("\n\t 2- Execute a specific Task \n");
-                    Console.WriteLine("\n\t 3- Execute all Tasks \n");
-                    Console.WriteLine("\n\t 4- Exit \n");
+                    Console.WriteLine("\n SELECT AN OPTION : \n");
+                    Console.WriteLine("\n 1- Create a task \n");
+                    Console.WriteLine("\n 2- Execute a specific Task \n");
+                    Console.WriteLine("\n 3- Execute all Tasks \n");
+                    Console.WriteLine("\n 4- Exit \n");
 
                     options = Convert.ToInt32(Console.ReadLine());
 
 
-
-                switch (options)
+                    switch (options)
                     {
                         case 1:
 
-                            Console.WriteLine("\n\n\n\n\n\t Create a new task ! \n");
-                            Console.Write("\n\t give us a name for your task : ");
+                            Console.WriteLine("\n\n Create a new task ! \n");
+                            Console.Write("\n Enter your task name : ");
+                           
                             task_name = Console.ReadLine();
-
-                            Console.Write("\n\t give us the source path of the directory you wanna copy :  ");
+                           
+                            Console.Write("\n Enter the source path of the directory you want to copy :  ");
                             task_sourcePath = Console.ReadLine();
 
-                            Console.Write("\n\t give us the destination path :  ");
+                            while(System.IO.Directory.Exists(task_sourcePath) != true)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write("\n Invalid source path, please try again  ");
+                                Console.ResetColor();
+
+                                Console.Write("\n Enter the source path of the directory you want to copy :  ");
+                                task_sourcePath = Console.ReadLine();
+                            }
+
+                            Console.Write("\n Enter the destination path :  ");
                             task_targetPath = Console.ReadLine();
 
-                            Console.WriteLine("\n\t give the type of the task \n<1>: Complete. \n<2>: Differential : ");
+                            while (System.IO.Directory.Exists(task_targetPath) != true)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write("\n Invalid destination path, please try again ! ");
+                                Console.ResetColor();
+                                Console.Write("\n Enter the destination path of the directory you want to copy :  ");
+                                task_sourcePath = Console.ReadLine();
+                            }
+
+                            Console.WriteLine("\n Enter the type of the task \n <1>: Complete. \n <2>: Differential : ");
                            
                             do
                             {
@@ -93,16 +108,24 @@ namespace easySave
 
                             } while (typeOftask != 1 || typeOftask != 2);
 
-                             Console.WriteLine("\n\t task saved ! \n");
-                             Thread.Sleep(3000);
-                             Console.WriteLine($"\n\t name : {task_name} \n \n source Path : {task_sourcePath}  \n \n destination path : {task_targetPath} \n \n task type : {task_type} \n ");
+                             Console.ForegroundColor = ConsoleColor.Green;
+                             Console.WriteLine("\n\n");
+                             Console.WriteLine("  ████████╗ █████╗ ███████╗██╗  ██╗    ███████╗ █████╗ ██╗   ██╗███████╗██████╗ ");
+                             Console.WriteLine("  ╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝    ██╔════╝██╔══██╗██║   ██║██╔════╝██╔══██╗");
+                             Console.WriteLine("     ██║   ███████║███████╗█████╔╝     ███████╗███████║██║   ██║█████╗  ██║  ██║");
+                             Console.WriteLine("     ██║   ██╔══██║╚════██║██╔═██╗     ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝  ██║  ██║");
+                             Console.WriteLine("     ██║   ██║  ██║███████║██║  ██╗    ███████║██║  ██║ ╚████╔╝ ███████╗██████╔╝");
+                             Console.WriteLine("     ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝    ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═════╝ ");
 
-                             Json convert = new Json();       //Convert information's task to json format 
+                             Thread.Sleep(2000);
+                             Console.ResetColor();
+
+                            Console.WriteLine($"\n\t name : {task_name} \n \n source Path : {task_sourcePath}  \n \n destination path : {task_targetPath} \n \n task type : {task_type} \n ");
+
+                             Json convert = new Json();        //Convert information's task to json format 
                              string informationstask = convert.ConvertToJson(task_name, task_sourcePath, task_targetPath, task_type);
-                             convert.CreateFileJson(informationstask);  // Put json infromation into file 
-                           
-                             
-
+                             convert.CreateFileJson(informationstask);  // Put json infromation into file    
+                            
                         break;
 
                         case 2:
@@ -115,7 +138,7 @@ namespace easySave
                             File file = new File();
 
                             string textFile = file.getFileContent(taskInformationFile);
-                           // file.findTaskName(textFile, task_name);
+                          
 
                             if ( file.findTaskName(textFile, task_name) == true )         // If task name exists into task's informations file 
                             {
@@ -138,14 +161,26 @@ namespace easySave
 
 
                         break;
-                        case 4:
 
-                              Environment.Exit(0);
-                              break;
+                        case 4:
+                                
+                                Console.WriteLine("\n\n");
+                                Console.WriteLine("  ██████╗  ██████╗  ██████╗ ██████╗      ██████╗ ██╗   ██╗███████╗    ██╗");
+                                Console.WriteLine("  ██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗    ██╔══██╗╚██╗ ██╔╝██╔════╝    ██║");
+                                Console.WriteLine("  ██║  ███╗██║   ██║██║   ██║██║  ██║    ██████╔╝ ╚████╔╝ █████╗      ██║");
+                                Console.WriteLine("  ██║   ██║██║   ██║██║   ██║██║  ██║    ██╔══██╗  ╚██╔╝  ██╔══╝      ╚═╝");
+                                Console.WriteLine("  ██████╔╝╚██████╔╝╚██████╔╝██████╔╝     ██████╔╝   ██║   ███████╗    ██╗");
+                                Console.WriteLine("  ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝      ╚═════╝    ╚═╝   ╚══════╝    ╚═╝");
+
+                                Thread.Sleep(2000);
+                                Environment.Exit(0);
+
+
+                        break;
 
                         default:
 
-                            Console.WriteLine(" \n Invalid Input ! please choose between 1 and 4 \n ");
+                            Console.WriteLine(" \n Invalid Input, please choose between 1 and 4 \n ");
 
                             break;
                     }
@@ -155,55 +190,5 @@ namespace easySave
         }
 
 
-
-
-        public void frameMenu ()
-        {
-                Console.CursorVisible = false;
-
-                int yMax = Console.WindowHeight;
-                int xMax = Console.WindowWidth;
-                char[,] characters = new char[Console.WindowWidth, Console.WindowHeight];
-                Console.WriteLine("\n");
-
-                for (int i = 0; i < Console.WindowWidth; i++)
-                {
-                    for (int j = 0; j < Console.WindowHeight; j++)
-                    {
-                        char currentChar = ' ';
-
-                        if ((i == 0) || (i == Console.WindowWidth - 1))
-                        {
-                            currentChar = '║';
-                        }
-                        else
-                        {
-                            if ((j == 0) || (j == Console.WindowHeight - 1))
-                            {
-                                currentChar = '═';
-                            }
-                        }
-
-                        characters[i, j] = currentChar;
-                    }
-                }
-
-                characters[0, 0] = '╔';
-                characters[Console.WindowWidth - 1, 0] = '╗';
-                characters[0, Console.WindowHeight - 1] = '╚';
-                characters[Console.WindowWidth - 1, Console.WindowHeight - 1] = '╝';
-
-                for (int y = 0; y < yMax; y++)
-                {
-                    string line = string.Empty;
-                    for (int x = 0; x < xMax; x++)
-                    {
-                        line += characters[x, y];
-                    }
-                    Console.SetCursorPosition(0, y);
-                    Console.Write(line);
-                }
-                Console.SetCursorPosition(0, 0);
-            }
     }
 }
