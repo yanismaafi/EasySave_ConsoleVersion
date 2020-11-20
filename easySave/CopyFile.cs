@@ -5,10 +5,7 @@ using System.Threading;
 using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
 using System.Diagnostics;
-
-
-
-
+using Newtonsoft.Json.Linq;
 
 namespace easySave
 {
@@ -22,7 +19,7 @@ namespace easySave
             int nbrFile = 0;
 
 
-            string[] filePaths = Directory.GetFiles(sourcePath);     // List of all paths files existing into source
+            string[] filePaths = Directory.GetFiles(sourcePath);                 // List of all paths files existing into source
 
             using (StreamWriter LogFile = System.IO.File.CreateText(LogPath))   // Creating our File Log
             {
@@ -39,37 +36,26 @@ namespace easySave
                         string JsonDatalog = JsonConvert.SerializeObject(datalog);
                      
                         LogFile.WriteLine(JsonDatalog);                                                // Put the Json Format infomration into Log file
-                        LogFile.WriteLine("\n-----------------------------------------\n");
+                      
                 }      
             }
 
-            var timer = new Stopwatch();       // Calculate time 
+            var timer = new Stopwatch();       // Calculate copy time 
             timer.Start();
 
             FileSystem.CopyDirectory(sourcePath, destPath, UIOption.AllDialogs);           // Copy all source files to destination
+
             timer.Stop();
             
 
             for (int i = 0; i <= timer.ElapsedMilliseconds; i++)
             {
-                Console.Write($"\rProgress: {i} %   ");
-                Thread.Sleep(25);
-            }
-        }
-
-
-
-
-        public bool checkExistence(string path)   // Verify if file exists or not
-        {
-            if (File.Exists(path))
-            {
-                return true;
+                Console.Write($"\n PROGRESS : {i} %   ");       // Progress Bar
+                Thread.Sleep(2);
             }
 
-            return false;
-        }
 
+        }
 
     }
 }

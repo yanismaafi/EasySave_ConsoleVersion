@@ -24,11 +24,12 @@ namespace easySave
 
 
 
+
         public void CreateFileJson (string information)    // Create json File and write json content (information's about the job)
         {
             string path = "C:\\Users\\ASUS\\Desktop\\JOB\\job's_Details.json";
 
-            using (StreamWriter jsonFile = File.CreateText(path))  
+            using (StreamWriter jsonFile = System.IO.File.CreateText(path))  
             {
                 jsonFile.WriteLine(information);
             }

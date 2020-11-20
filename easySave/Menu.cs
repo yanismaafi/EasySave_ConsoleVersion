@@ -91,8 +91,9 @@ namespace easySave
 
                              Json convert = new Json();       //Convert information's job to json format 
                              string informationsJob = convert.ConvertToJson(job_name, job_sourcePath, job_targetPath, job_type);
-                             convert.CreateFileJson(informationsJob);  // Put json infromation into file
-                      
+                             convert.CreateFileJson(informationsJob);  // Put json infromation into file 
+                           
+                             
 
                         break;
 
@@ -119,7 +120,10 @@ namespace easySave
 
                             break;
                         case 4:
-                            break;
+
+                              Environment.Exit(0);
+                              break;
+
                         default:
 
                             Console.WriteLine(" \n Invalid Input ! please choose between 1 and 4 \n ");
