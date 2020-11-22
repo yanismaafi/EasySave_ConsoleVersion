@@ -4,14 +4,14 @@ using System.Text;
 
 namespace easySave
 {
-    class Work
+    class Task
     {
        public string name;
        public string source;
        public string destination;
        public string type;
 
-        public Work(string name, string source, string destination, string type)  //
+        public Task(string name, string source, string destination, string type)  //
         {
             this.name = name;
             this.source = source;
@@ -19,4 +19,6 @@ namespace easySave
             this.type = type;
         }
     }
+
+
 }

@@ -14,7 +14,7 @@ namespace easySave
         public string ConvertToJson (string name, string source, string destination, string type)   //Convert data to Json format
         {
 
-            Work newWork = new Work(name, source, destination, type);
+            Task newWork = new Task(name, source, destination, type);
            
             string jsonResult = JsonConvert.SerializeObject(newWork);
 

@@ -12,6 +12,7 @@ namespace easySave
 
         public void MenuConsole()
         {
+                Console.ForegroundColor = ConsoleColor.White;
 
                 int options = 0;
                 int typeOftask = 0;
@@ -40,22 +41,24 @@ namespace easySave
 
                     Console.WriteLine("\n\t\t\t\t\t\t Welcome to EasySave !  \n");
 
-                    Console.ResetColor();
+                    Console.ForegroundColor = ConsoleColor.White;
 
-                    Console.WriteLine("\n SELECT AN OPTION : \n");
+
                     Console.WriteLine("\n 1- Create a task \n");
                     Console.WriteLine("\n 2- Execute a specific Task \n");
                     Console.WriteLine("\n 3- Execute all Tasks \n");
                     Console.WriteLine("\n 4- Exit \n");
 
-                    options = Convert.ToInt32(Console.ReadLine());
-
+                     options = Convert.ToInt32(Console.ReadLine());
+                   
+                    
 
                     switch (options)
                     {
                         case 1:
 
-                            Console.WriteLine("\n\n Create a new task ! \n");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine("\n\n ------------------------------------ Create a new task ----------------------------------------  \n");
                             Console.Write("\n Enter your task name : ");
                            
                             task_name = Console.ReadLine();
@@ -69,11 +72,11 @@ namespace easySave
                                 Console.Write("\n Invalid source path, please try again  ");
                                 Console.ResetColor();
 
-                                Console.Write("\n Enter the source path of the directory you want to copy :  ");
+                                Console.Write("\n Enter the source path of the directory :  ");
                                 task_sourcePath = Console.ReadLine();
                             }
 
-                            Console.Write("\n Enter the destination path :  ");
+                            Console.Write("\n Enter the destination path of the directory :  ");
                             task_targetPath = Console.ReadLine();
 
                             while (System.IO.Directory.Exists(task_targetPath) != true)
@@ -82,7 +85,7 @@ namespace easySave
                                 Console.Write("\n Invalid destination path, please try again ! ");
                                 Console.ResetColor();
                                 Console.Write("\n Enter the destination path of the directory you want to copy :  ");
-                                task_sourcePath = Console.ReadLine();
+                                task_targetPath = Console.ReadLine();
                             }
 
                             Console.WriteLine("\n Enter the type of the task \n <1>: Complete. \n <2>: Differential : ");
@@ -108,6 +111,8 @@ namespace easySave
 
                             } while (typeOftask != 1 || typeOftask != 2);
 
+                            
+
                              Console.ForegroundColor = ConsoleColor.Green;
                              Console.WriteLine("\n\n");
                              Console.WriteLine("  ████████╗ █████╗ ███████╗██╗  ██╗    ███████╗ █████╗ ██╗   ██╗███████╗██████╗ ");
@@ -116,11 +121,12 @@ namespace easySave
                              Console.WriteLine("     ██║   ██╔══██║╚════██║██╔═██╗     ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝  ██║  ██║");
                              Console.WriteLine("     ██║   ██║  ██║███████║██║  ██╗    ███████║██║  ██║ ╚████╔╝ ███████╗██████╔╝");
                              Console.WriteLine("     ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝    ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═════╝ ");
+                             Console.WriteLine("\n\n");
 
-                             Thread.Sleep(2000);
-                             Console.ResetColor();
+                             Thread.Sleep(1000);
+                             Console.ForegroundColor = ConsoleColor.White;
 
-                            Console.WriteLine($"\n\t name : {task_name} \n \n source Path : {task_sourcePath}  \n \n destination path : {task_targetPath} \n \n task type : {task_type} \n ");
+                             Console.WriteLine($"\n\t name : {task_name} \n \n source Path : {task_sourcePath}  \n \n destination path : {task_targetPath} \n \n task type : {task_type} \n ");
 
                              Json convert = new Json();        //Convert information's task to json format 
                              string informationstask = convert.ConvertToJson(task_name, task_sourcePath, task_targetPath, task_type);
@@ -144,26 +150,33 @@ namespace easySave
                             {
                                 string source = file.getSourcePath(taskInformationFile, task_name);
                                 string destination = file.getDestinationPath(taskInformationFile, task_name);
-
                                 CopyFile copyTask = new CopyFile();
-                                copyTask.Copy(source, destination, task_name);
 
-                            }else {  Console.WriteLine("\t\n Task doesn't exist. \n"); }
+                                  if(file.isDifferential(taskInformationFile) == true)
+                                  {
+                                     copyTask.copyChangedFile(source, destination);
+                                  
+                                  }else
+                                  {
+                                      copyTask.Copy(source, destination, task_name);
+                                  }
 
+                        }
+                        else {  Console.WriteLine("\t\n Task doesn't exist. \n"); }
 
-
+                          
                         break;
 
                         case 3:
 
-                            CopyFile Files = new CopyFile();
-                            Files.Copy(task_sourcePath, task_targetPath, task_name);
-
+                            CopyFile files = new CopyFile();
+                            files.CopyAllTasks();
 
                         break;
 
                         case 4:
-                                
+
+                                Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("\n\n");
                                 Console.WriteLine("  ██████╗  ██████╗  ██████╗ ██████╗      ██████╗ ██╗   ██╗███████╗    ██╗");
                                 Console.WriteLine("  ██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗    ██╔══██╗╚██╗ ██╔╝██╔════╝    ██║");
@@ -171,18 +184,21 @@ namespace easySave
                                 Console.WriteLine("  ██║   ██║██║   ██║██║   ██║██║  ██║    ██╔══██╗  ╚██╔╝  ██╔══╝      ╚═╝");
                                 Console.WriteLine("  ██████╔╝╚██████╔╝╚██████╔╝██████╔╝     ██████╔╝   ██║   ███████╗    ██╗");
                                 Console.WriteLine("  ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝      ╚═════╝    ╚═╝   ╚══════╝    ╚═╝");
-
+                            
                                 Thread.Sleep(2000);
+                                Console.ForegroundColor = ConsoleColor.White;
                                 Environment.Exit(0);
-
 
                         break;
 
                         default:
 
-                            Console.WriteLine(" \n Invalid Input, please choose between 1 and 4 \n ");
+                                 Console.ForegroundColor = ConsoleColor.Red;
+                                 Console.WriteLine(" \n Invalid Input, please choose between 1 and 4 \n ");
+                                 Console.ForegroundColor = ConsoleColor.White;
+                                 Thread.Sleep(1000);
 
-                            break;
+                        break;
                     }
 
                 } while (options != 4);
