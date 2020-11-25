@@ -47,9 +47,10 @@ namespace easySave
                     Console.WriteLine("\n 1- Create a task \n");
                     Console.WriteLine("\n 2- Execute a specific Task \n");
                     Console.WriteLine("\n 3- Execute all Tasks \n");
-                    Console.WriteLine("\n 4- Exit \n");
+                    Console.WriteLine("\n 4- Show my Saved Tasks \n");
+                    Console.WriteLine("\n 5- Exit \n");
 
-                     options = Convert.ToInt32(Console.ReadLine());
+                    options = Convert.ToInt32(Console.ReadLine());
                    
                     
 
@@ -115,12 +116,12 @@ namespace easySave
 
                              Console.ForegroundColor = ConsoleColor.Green;
                              Console.WriteLine("\n\n");
-                             Console.WriteLine("  ████████╗ █████╗ ███████╗██╗  ██╗    ███████╗ █████╗ ██╗   ██╗███████╗██████╗ ");
-                             Console.WriteLine("  ╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝    ██╔════╝██╔══██╗██║   ██║██╔════╝██╔══██╗");
-                             Console.WriteLine("     ██║   ███████║███████╗█████╔╝     ███████╗███████║██║   ██║█████╗  ██║  ██║");
-                             Console.WriteLine("     ██║   ██╔══██║╚════██║██╔═██╗     ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝  ██║  ██║");
-                             Console.WriteLine("     ██║   ██║  ██║███████║██║  ██╗    ███████║██║  ██║ ╚████╔╝ ███████╗██████╔╝");
-                             Console.WriteLine("     ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝    ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═════╝ ");
+                             Console.WriteLine("\t\t\t  ████████╗ █████╗ ███████╗██╗  ██╗    ███████╗ █████╗ ██╗   ██╗███████╗██████╗ ");
+                             Console.WriteLine("\t\t\t  ╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝    ██╔════╝██╔══██╗██║   ██║██╔════╝██╔══██╗");
+                             Console.WriteLine("\t\t\t     ██║   ███████║███████╗█████╔╝     ███████╗███████║██║   ██║█████╗  ██║  ██║");
+                             Console.WriteLine("\t\t\t     ██║   ██╔══██║╚════██║██╔═██╗     ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝  ██║  ██║");
+                             Console.WriteLine("\t\t\t     ██║   ██║  ██║███████║██║  ██╗    ███████║██║  ██║ ╚████╔╝ ███████╗██████╔╝");
+                             Console.WriteLine("\t\t\t     ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝    ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═════╝ ");
                              Console.WriteLine("\n\n");
 
                              Thread.Sleep(1000);
@@ -129,7 +130,9 @@ namespace easySave
                              Console.WriteLine($"\n\t name : {task_name} \n \n source Path : {task_sourcePath}  \n \n destination path : {task_targetPath} \n \n task type : {task_type} \n ");
 
                              Json convert = new Json();        //Convert information's task to json format 
-                             string informationstask = convert.ConvertToJson(task_name, task_sourcePath, task_targetPath, task_type);
+                             ;
+                        
+                             string informationstask = convert.ConvertToJson(task_name, task_sourcePath, task_targetPath, task_type,DateTime.Now);
                              convert.CreateFileJson(informationstask);  // Put json infromation into file    
                             
                         break;
@@ -146,50 +149,56 @@ namespace easySave
                             string textFile = file.getFileContent(taskInformationFile);
                           
 
-                            if ( file.findTaskName(textFile, task_name) == true )         // If task name exists into task's informations file 
-                            {
-                                string source = file.getSourcePath(taskInformationFile, task_name);
-                                string destination = file.getDestinationPath(taskInformationFile, task_name);
-                                CopyFile copyTask = new CopyFile();
+                           
 
-                                  if(file.isDifferential(taskInformationFile) == true)
-                                  {
-                                     copyTask.copyChangedFile(source, destination);
-                                  
-                                  }else
-                                  {
-                                      copyTask.Copy(source, destination, task_name);
-                                  }
 
-                        }
-                        else {  Console.WriteLine("\t\n Task doesn't exist. \n"); }
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("\n\n");
+                            Console.WriteLine("███████╗██╗   ██╗ ██████╗ ██████╗███████╗███████╗███████╗██╗   ██╗██╗");
+                            Console.WriteLine("██╔════╝██║   ██║██╔════╝██╔════╝██╔════╝██╔════╝██╔════╝██║   ██║██║");    
+                            Console.WriteLine("███████╗██║   ██║██║     ██║     █████╗  ███████╗█████╗  ██║   ██║██║");
+                            Console.WriteLine("╚════██║██║   ██║██║     ██║     ██╔══╝  ╚════██║██╔══╝  ██║   ██║██║");
+                            Console.WriteLine("███████║╚██████╔╝╚██████╗╚██████╗███████╗███████║██║     ╚██████╔╝███████╗");
+                            Console.WriteLine("╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝╚══════╝╚══════╝╚═╝      ╚═════╝ ╚══════╝");
 
-                          
-                        break;
+                            Console.WriteLine("\n\n");
+
+                            Thread.Sleep(1000);
+                            Console.ForegroundColor = ConsoleColor.White;
+
+                            break;
 
                         case 3:
 
                             CopyFile files = new CopyFile();
-                            files.CopyAllTasks();
+                           
 
                         break;
+
 
                         case 4:
 
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine("\n\n");
-                                Console.WriteLine("  ██████╗  ██████╗  ██████╗ ██████╗      ██████╗ ██╗   ██╗███████╗    ██╗");
-                                Console.WriteLine("  ██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗    ██╔══██╗╚██╗ ██╔╝██╔════╝    ██║");
-                                Console.WriteLine("  ██║  ███╗██║   ██║██║   ██║██║  ██║    ██████╔╝ ╚████╔╝ █████╗      ██║");
-                                Console.WriteLine("  ██║   ██║██║   ██║██║   ██║██║  ██║    ██╔══██╗  ╚██╔╝  ██╔══╝      ╚═╝");
-                                Console.WriteLine("  ██████╔╝╚██████╔╝╚██████╔╝██████╔╝     ██████╔╝   ██║   ███████╗    ██╗");
-                                Console.WriteLine("  ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝      ╚═════╝    ╚═╝   ╚══════╝    ╚═╝");
-                            
-                                Thread.Sleep(2000);
-                                Console.ForegroundColor = ConsoleColor.White;
-                                Environment.Exit(0);
+                        File FILE = new File();
+                        FILE.ShowTasks();
 
                         break;
+
+                        case 5:
+
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                    Console.WriteLine("\n\n");
+                                    Console.WriteLine("\t\t\t  ██████╗  ██████╗  ██████╗ ██████╗      ██████╗ ██╗   ██╗███████╗    ██╗");
+                                    Console.WriteLine("\t\t\t  ██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗    ██╔══██╗╚██╗ ██╔╝██╔════╝    ██║");
+                                    Console.WriteLine("\t\t\t  ██║  ███╗██║   ██║██║   ██║██║  ██║    ██████╔╝ ╚████╔╝ █████╗      ██║");
+                                    Console.WriteLine("\t\t\t  ██║   ██║██║   ██║██║   ██║██║  ██║    ██╔══██╗  ╚██╔╝  ██╔══╝      ╚═╝");
+                                    Console.WriteLine("\t\t\t  ██████╔╝╚██████╔╝╚██████╔╝██████╔╝     ██████╔╝   ██║   ███████╗    ██╗");
+                                    Console.WriteLine("\t\t\t  ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝      ╚═════╝    ╚═╝   ╚══════╝    ╚═╝");
+                            
+                                    Thread.Sleep(2000);
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                    Environment.Exit(0);
+
+                            break;
 
                         default:
 

@@ -6,17 +6,20 @@ namespace easySave
 {
     class Task
     {
+
        public string name;
        public string source;
        public string destination;
        public string type;
+       public DateTime date;
 
-        public Task(string name, string source, string destination, string type)  //
+        public Task(string name, string source, string destination, string type , DateTime Now)
         {
             this.name = name;
             this.source = source;
             this.destination = destination;
             this.type = type;
+            this.date = Now;
         }
     }
 

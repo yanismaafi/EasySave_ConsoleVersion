@@ -11,10 +11,10 @@ namespace easySave
     {
         
 
-        public string ConvertToJson (string name, string source, string destination, string type)   //Convert data to Json format
+        public string ConvertToJson (string name, string source, string destination, string type, DateTime Now)   //Convert data to Json format
         {
 
-            Task newWork = new Task(name, source, destination, type);
+            Task newWork = new Task(name, source, destination, type, Now);
            
             string jsonResult = JsonConvert.SerializeObject(newWork);
 
@@ -49,6 +49,7 @@ namespace easySave
 
         }
 
+        
 
 
 
