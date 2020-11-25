@@ -22,9 +22,9 @@ namespace easySave
 
 
 
-        public bool isDifferential(string DetailFilePath, string FilePath)
+        public bool isDifferential(string FilePath)
         {
-            string[] linesDetailFile = System.IO.File.ReadAllLines(DetailFilePath);
+            string[] linesDetailFile = System.IO.File.ReadAllLines(taskInformationFile);
 
             string path;
             string type;
@@ -36,7 +36,7 @@ namespace easySave
                 path = data["source"].Value<string>();
                 type = data["type"].Value<string>();
 
-                if ( string.Compare(path, FilePath)== 0 && type == "Differential")
+                if ( string.Compare(path, FilePath) == 0 && type == "Differential")
                 {
                     return true;
                 }
@@ -58,20 +58,40 @@ namespace easySave
         }
 
 
-
-        public bool checkExistenceIntoDirectory(string filePath, string directoryPath)    // Check if a file exist into directory
+        public bool ExistenceIntoDestination(string fileName ,string destinationPath)    // Verify if file exists into destination
         {
-            string[] directoryPaths = System.IO.Directory.GetFiles(directoryPath);
+            string file = System.IO.Path.Combine(destinationPath, fileName);
 
-            foreach (string file in directoryPaths)
+            if (System.IO.File.Exists(file))
             {
-                if(string.Compare(filePath, file) == 0)
-                {
-                    return true;
-                }
+                return true;
             }
 
             return false;
+        }
+
+
+
+
+        public bool verifyLength (string fileName, long fileLength ,string destinationPath)    // 
+        {
+            string[] destinationFiles = System.IO.Directory.GetFiles(destinationPath);
+
+            foreach (string file in destinationFiles)
+            {
+                string FName = Path.GetFileName(file);
+
+                if (string.Compare(fileName, FName) == 0)
+                {
+                    long length = new System.IO.FileInfo(file).Length;
+
+                    if (fileLength == length)
+                    {
+                        return true;
+                    }
+                }
+            }
+          return false;
         }
 
 
@@ -145,43 +165,11 @@ namespace easySave
 
 
 
-        public bool findChangedFile(string sourceFile, string destinationPath)
-        {
-
-            string[] DestfilePaths = Directory.GetFiles(destinationPath);         // List of all paths files existing into destination
-
-            string sourceFileName; long SourceFilelength;
-            string destFileName; long DestFilelength;
-
-
-            sourceFileName = Path.GetFileName(sourceFile);
-            SourceFilelength = new System.IO.FileInfo(sourceFile).Length;
-
-            foreach (string destfile in DestfilePaths)
-            {
-                destFileName = Path.GetFileName(destfile);
-
-                if (string.Compare(sourceFileName, destFileName) == 0)
-                {
-                    DestFilelength = new System.IO.FileInfo(destfile).Length;
-
-                    if (SourceFilelength != DestFilelength)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-
 
         public void ShowTasks()           // List all saved Tasks
         {
 
-            if (checkExistence(
-                ) == false)   // verify if taskInformationFile was created or not
+            if (checkExistence(taskInformationFile) == false)   // verify if taskInformationFile was created or not
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\n No task has been saved");
@@ -210,6 +198,7 @@ namespace easySave
             }
 
         }
+
 
 
 
