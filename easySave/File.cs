@@ -71,6 +71,26 @@ namespace easySave
         }
 
 
+        public bool taskNameExistence(string taskName)           // Check if a Task Name entred by user exist in taskInformationFile
+        {
+            if( checkExistence(taskInformationFile) == true )
+            {
+                string[] informationTask = System.IO.File.ReadAllLines(taskInformationFile);
+
+                foreach(string line in informationTask)
+                {
+                    var data = (JObject)JsonConvert.DeserializeObject(line);
+                    string name = data["name"].Value<string>();
+
+                    if( string.Compare(taskName, name) ==0 )
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
 
 
         public bool verifyLength (string fileName, long fileLength ,string destinationPath)    // 
@@ -164,9 +184,35 @@ namespace easySave
 
 
 
+        public void ShowTasksName()           // List all saved Tasks
+        {
+
+            if (checkExistence(taskInformationFile) == false)   // verify if taskInformationFile was created or not
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n No task has been saved");
+                Console.ForegroundColor = ConsoleColor.White;
+            }else
+            {
+                string[] lines = System.IO.File.ReadAllLines(taskInformationFile);
+
+                foreach (string line in lines)
+                {
+                    var data = (JObject)JsonConvert.DeserializeObject(line);
+
+                    string TaskName = data["name"].Value<string>();                     // Get the name of the task
+
+                    Console.WriteLine("- Task : " + TaskName );
+                }
+
+                Console.WriteLine("\n--------------------------------------\n");
+            }
+
+        }
 
 
-        public void ShowTasks()           // List all saved Tasks
+
+        public void ShowAllTasks()           // List all saved Tasks
         {
 
             if (checkExistence(taskInformationFile) == false)   // verify if taskInformationFile was created or not

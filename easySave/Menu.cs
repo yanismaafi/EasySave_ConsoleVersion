@@ -121,18 +121,40 @@ namespace easySave
 
                              Json convert = new Json();        //Convert information's task to json format 
                              
-                        
                              string informationstask = convert.ConvertToJson(task_name, task_sourcePath, task_targetPath, task_type,DateTime.Now);
-                             convert.CreateFileJson(informationstask);  // Put json infromation into file    
+                             convert.CreateFileJson(informationstask);  // Put json infromation into File   
                             
                         break;
 
+
                         case "2":
 
-                            Console.WriteLine("\t\n Execute a specific Task ! \n ");
+                            Console.WriteLine("\n----------------------------------------------- Execute a specific Task ----------------------------------------------\n ");
 
-                            Console.WriteLine("\t\n Name of the task tou want to execute :");
+                            File task = new File();
+                            Console.WriteLine("\nList of saved Task : \n ");
+                            task.ShowTasksName();
+
+                            Console.Write("\nName of the task you want to execute : ");
                             task_name = Console.ReadLine();
+                           
+                            while( string.IsNullOrEmpty(task_name) )
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write("\nThis field are required, please enter a Task name ... ");
+                                Console.ForegroundColor = ConsoleColor.White;
+                                Console.Write("\nEnter name of the task you want to execute : ");
+                                task_name = Console.ReadLine();
+                            }
+
+                            while ( task.findTaskName(task_name) == false)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write("\nThe task : " + task_name + " doesn't exist ... \n");
+                                Console.ForegroundColor = ConsoleColor.White;
+                                Console.Write("\nPlease, enter an existing Task name : ");
+                                task_name = Console.ReadLine();
+                            }
 
                             CopyFile file = new CopyFile();
 
@@ -141,12 +163,12 @@ namespace easySave
 
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("\n\n");
-                            Console.WriteLine("███████╗██╗   ██╗ ██████╗ ██████╗███████╗███████╗███████╗██╗   ██╗██╗");
-                            Console.WriteLine("██╔════╝██║   ██║██╔════╝██╔════╝██╔════╝██╔════╝██╔════╝██║   ██║██║");    
-                            Console.WriteLine("███████╗██║   ██║██║     ██║     █████╗  ███████╗█████╗  ██║   ██║██║");
-                            Console.WriteLine("╚════██║██║   ██║██║     ██║     ██╔══╝  ╚════██║██╔══╝  ██║   ██║██║");
-                            Console.WriteLine("███████║╚██████╔╝╚██████╗╚██████╗███████╗███████║██║     ╚██████╔╝███████╗");
-                            Console.WriteLine("╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝╚══════╝╚══════╝╚═╝      ╚═════╝ ╚══════╝");
+                            Console.WriteLine("\t\t\t ███████╗██╗   ██╗ ██████╗ ██████╗███████╗███████╗███████╗██╗   ██╗██╗");
+                            Console.WriteLine("\t\t\t ██╔════╝██║   ██║██╔════╝██╔════╝██╔════╝██╔════╝██╔════╝██║   ██║██║");    
+                            Console.WriteLine("\t\t\t ███████╗██║   ██║██║     ██║     █████╗  ███████╗█████╗  ██║   ██║██║");
+                            Console.WriteLine("\t\t\t ╚════██║██║   ██║██║     ██║     ██╔══╝  ╚════██║██╔══╝  ██║   ██║██║");
+                            Console.WriteLine("\t\t\t ███████║╚██████╔╝╚██████╗╚██████╗███████╗███████║██║     ╚██████╔╝███████╗");
+                            Console.WriteLine("\t\t\t ╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝╚══════╝╚══════╝╚═╝      ╚═════╝ ╚══════╝ \n");
 
                             Console.WriteLine("\n\n");
                             Thread.Sleep(1000);
@@ -178,7 +200,7 @@ namespace easySave
                         case "4":
 
                                 File FILE = new File();
-                                FILE.ShowTasks();
+                                FILE.ShowAllTasks();
                         break;
 
                         case "5":
@@ -196,14 +218,14 @@ namespace easySave
                                     Console.ForegroundColor = ConsoleColor.White;
                                     Environment.Exit(0);
 
-                            break;
+                        break;
 
                         default:
 
                                  Console.ForegroundColor = ConsoleColor.Red;
                                  Console.WriteLine(" \n Invalid Input, please choose between 1 and 4 \n ");
                                  Console.ForegroundColor = ConsoleColor.White;
-                                 Thread.Sleep(1000);
+                                 Thread.Sleep(2000);
 
                         break;
                     }

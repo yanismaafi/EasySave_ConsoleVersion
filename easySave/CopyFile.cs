@@ -13,20 +13,19 @@ namespace easySave
     {
 
         public static int nbrFile;
-        public string LogPath = "C:\\Users\\ASUS\\Desktop\\Task\\LogFile.json";       // Log File path
+        public string LogPath = "C:\\Users\\ASUS\\Desktop\\Task\\LogFile.json";        // Log File path
         public string taskInformationFile = "C:\\Users\\ASUS\\Desktop\\Task\\Task's_Details.json";   // Log Task's details File
 
 
 
 
 
-        public void Copy(string sourcePath, string destPath)  
-        { 
-
+        public void Copy(string sourcePath, string destPath)      // This Copy method is used for the complete Save Type
+        {
             var timer = new Stopwatch();       // Calculate copy time 
             timer.Start();
 
-            FileSystem.CopyDirectory(sourcePath, destPath, UIOption.AllDialogs);           // Copy all source files to destination
+            FileSystem.CopyDirectory(sourcePath, destPath, UIOption.AllDialogs);           // Copy all source files from source to destination   ( complete save)
             LogFile(sourcePath, destPath);
 
             timer.Stop();
@@ -37,7 +36,6 @@ namespace easySave
                 Console.Write($"\r PROGRESS : {i} %  ");       // Progress Bar
                 Thread.Sleep(5);
             }
-
         }
 
 
@@ -47,46 +45,45 @@ namespace easySave
         {
             File File = new File();
 
-            if( File.checkExistence(taskInformationFile) )
+            if( File.checkExistence(taskInformationFile) )                  // If the task's Information file exist
             {
-                string[] lines = System.IO.File.ReadAllLines(taskInformationFile);
+                string[] lines = System.IO.File.ReadAllLines(taskInformationFile);               // Get task's Information File Content
 
-                foreach (string line in lines )
-                {
-                    var data = (JObject)JsonConvert.DeserializeObject(line);
+                foreach (string line in lines )                                               // Loop line by line
+                { 
+                    var data = (JObject)JsonConvert.DeserializeObject(line);                  // Deserialize line 
 
                     string source = data["source"].Value<string>();
-                    string destination = data["destination"].Value<string>();
+                    string destination = data["destination"].Value<string>();                  // Get the value of source and destination
 
 
-                    if ( File.isDifferential(source) == true)
+                    if ( File.isDifferential(source) == true)                                 // Check the type of save
                     {
                             string[] Files = System.IO.Directory.GetFiles(source);
-
-                            foreach(string file in Files)
+                                                                                              // Get all files from Source Path and loop file by file
+                            foreach (string file in Files) 
                             {
-                                string fileName = Path.GetFileName(file);
-                                Console.WriteLine(fileName);
-                                long length = new System.IO.FileInfo(file).Length;
+                                    string fileName = Path.GetFileName(file);
+                                    long length = new System.IO.FileInfo(file).Length;
 
-                                string dest = Path.Combine(destination, fileName);
+                                    string dest = Path.Combine(destination, fileName);
 
-                                    if (File.ExistenceIntoDestination(fileName, destination) == true)
-                                    {
-                                        if (File.verifyLength(fileName, length, destination) != true)
+                                        if (File.ExistenceIntoDestination(fileName, destination) == true)          // Check existance of the file into destination
+                                        {
+                                            if (File.verifyLength(fileName, length, destination) != true)
+                                            {
+                                                System.IO.File.Copy(file, dest, true);
+                                            }
+                                        }else
                                         {
                                             System.IO.File.Copy(file, dest, true);
                                         }
-                                    }else
-                                    {
-                                        System.IO.File.Copy(file, dest, true);
-                                    }
 
-                                 LogFile(file, dest);
+                                     LogFile(file, dest);                                                      // Update LogFile
                             }
                     }else
                     {
-                        Copy(source, destination);    
+                        Copy(source, destination);       // Do the complete copy
                     }
                 }
             }else
