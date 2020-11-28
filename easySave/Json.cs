@@ -26,7 +26,7 @@ namespace easySave
 
         public void CreateFileJson (string information)       // Create json File and write json content (information's about the job)
         {
-            string path = "C:\\Users\\ASUS\\Desktop\\Task\\Task's_Details.json";
+            string path = "C:\\EasySave\\Task's_Details.json";
 
             File file = new File();
 

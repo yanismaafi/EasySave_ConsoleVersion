@@ -1,0 +1,6 @@
+C:\Users\ASUS\Desktop\EasySave ConsoleVersion\easySave.exe
+C:\Users\ASUS\Desktop\EasySave ConsoleVersion\easySave.dll
+C:\Users\ASUS\Desktop\EasySave ConsoleVersion\easySave.deps.json
+C:\Users\ASUS\Desktop\EasySave ConsoleVersion\easySave.runtimeconfig.json
+C:\Users\ASUS\Desktop\EasySave ConsoleVersion\easySave.pdb
+C:\Users\ASUS\Desktop\EasySave ConsoleVersion\Newtonsoft.Json.dll

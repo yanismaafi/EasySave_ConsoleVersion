@@ -15,8 +15,8 @@ namespace easySave
         public static int nbrFile;
         public static int nbrDir;
 
-        public string LogPath = "C:\\Users\\ASUS\\Desktop\\Task\\LogFile.json";        // Log File path
-        public string taskInformationFile = "C:\\Users\\ASUS\\Desktop\\Task\\Task's_Details.json";   // Log Task's details File
+        public string LogPath = "C:\\EasySave\\LogFile.json";         // Log File path
+        public string taskInformationFile = "C:\\EasySave\\Task's_Details.json";   // Log Task's details File
 
 
 

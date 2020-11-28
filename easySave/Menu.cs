@@ -10,7 +10,7 @@ namespace easySave
     class Menu
     {
 
-        public string taskInformationFile = "C:\\Users\\ASUS\\Desktop\\Task\\Task's_Details.json";   // Log Task's details File
+         public string taskInformationFile = "C:\\EasySave\\Task's_Details.json";    // Log Task's details File
 
 
 
@@ -202,7 +202,6 @@ namespace easySave
 
 
 
-
         public void easySaveLogo()
         {
             Console.ForegroundColor = ConsoleColor.Blue;
@@ -247,12 +246,12 @@ namespace easySave
             Console.ForegroundColor = ConsoleColor.Green;
 
             Console.WriteLine("\n\n");
-            Console.WriteLine("\t\t\t  ████████╗ █████╗ ███████╗██╗  ██╗    ███████╗ █████╗ ██╗   ██╗███████╗██████╗ ");
-            Console.WriteLine("\t\t\t  ╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝    ██╔════╝██╔══██╗██║   ██║██╔════╝██╔══██╗ ");
-            Console.WriteLine("\t\t\t     ██║   ███████║███████╗█████╔╝     ███████╗███████║██║   ██║█████╗  ██║  ██║ ");
-            Console.WriteLine("\t\t\t     ██║   ██╔══██║╚════██║██╔═██╗     ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝  ██║  ██║ ");
-            Console.WriteLine("\t\t\t     ██║   ██║  ██║███████║██║  ██╗    ███████║██║  ██║ ╚████╔╝ ███████╗██████╔╝ ");
-            Console.WriteLine("\t\t\t     ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝    ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═════╝  ");
+            Console.WriteLine("\t\t  ████████╗ █████╗ ███████╗██╗  ██╗    ███████╗ █████╗ ██╗   ██╗███████╗██████╗ ");
+            Console.WriteLine("\t\t  ╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝    ██╔════╝██╔══██╗██║   ██║██╔════╝██╔══██╗ ");
+            Console.WriteLine("\t\t     ██║   ███████║███████╗█████╔╝     ███████╗███████║██║   ██║█████╗  ██║  ██║ ");
+            Console.WriteLine("\t\t     ██║   ██╔══██║╚════██║██╔═██╗     ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝  ██║  ██║ ");
+            Console.WriteLine("\t\t     ██║   ██║  ██║███████║██║  ██╗    ███████║██║  ██║ ╚████╔╝ ███████╗██████╔╝ ");
+            Console.WriteLine("\t\t     ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝    ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═════╝  ");
             Console.WriteLine("\n\n");
 
             Thread.Sleep(1000);
