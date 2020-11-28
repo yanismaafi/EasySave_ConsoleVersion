@@ -10,6 +10,11 @@ namespace easySave
     class Menu
     {
 
+        public string taskInformationFile = "C:\\Users\\ASUS\\Desktop\\Task\\Task's_Details.json";   // Log Task's details File
+
+
+
+
         public void MenuConsole()
         {
                 Console.ForegroundColor = ConsoleColor.White;
@@ -22,18 +27,7 @@ namespace easySave
                 int typeOftask;
 
             do {
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine("\n\n\n\n");
-
-                    Console.WriteLine("\t\t\t  ███████╗ █████╗ ███████╗██╗   ██╗    ███████╗ █████╗ ██╗   ██╗███████╗ ");
-                    Console.WriteLine("\t\t\t  ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝    ██╔════╝██╔══██╗██║   ██║██╔════╝");
-                    Console.WriteLine("\t\t\t  █████╗  ███████║███████╗ ╚████╔╝     ███████╗███████║██║   ██║█████╗ ");
-                    Console.WriteLine("\t\t\t  ██╔══╝  ██╔══██║╚════██║  ╚██╔╝      ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝  ");
-                    Console.WriteLine("\t\t\t  ███████╗██║  ██║███████║   ██║       ███████║██║  ██║ ╚████╔╝ ███████╗");
-                    Console.WriteLine("\t\t\t  ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝       ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝");
-
-                    Console.WriteLine("\n\t\t\t\t\t\t Welcome to EasySave !  \n");
-
+                    easySaveLogo();
                     Console.ForegroundColor = ConsoleColor.White;
 
                     Console.WriteLine("\n 1- Create a task \n");
@@ -44,7 +38,6 @@ namespace easySave
 
                     options = Console.ReadLine();
                    
-
                     switch (options)
                     {
 
@@ -104,26 +97,14 @@ namespace easySave
 
                             } while (typeOftask != 1 || typeOftask != 2);
 
-                            
-
-                             Console.ForegroundColor = ConsoleColor.Green;
-                             Console.WriteLine("\n\n");
-                             Console.WriteLine("\t\t\t  ████████╗ █████╗ ███████╗██╗  ██╗    ███████╗ █████╗ ██╗   ██╗███████╗██████╗ ");
-                             Console.WriteLine("\t\t\t  ╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝    ██╔════╝██╔══██╗██║   ██║██╔════╝██╔══██╗");
-                             Console.WriteLine("\t\t\t     ██║   ███████║███████╗█████╔╝     ███████╗███████║██║   ██║█████╗  ██║  ██║");
-                             Console.WriteLine("\t\t\t     ██║   ██╔══██║╚════██║██╔═██╗     ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝  ██║  ██║");
-                             Console.WriteLine("\t\t\t     ██║   ██║  ██║███████║██║  ██╗    ███████║██║  ██║ ╚████╔╝ ███████╗██████╔╝");
-                             Console.WriteLine("\t\t\t     ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝    ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═════╝ ");
-                             Console.WriteLine("\n\n");
-
-                             Thread.Sleep(1000);
-                             Console.ForegroundColor = ConsoleColor.White;
+                           
 
                              Json convert = new Json();        //Convert information's task to json format 
                              
-                             string informationstask = convert.ConvertToJson(task_name, task_sourcePath, task_targetPath, task_type,DateTime.Now);
+                             string informationstask = convert.ConvertToJson(task_name, task_sourcePath, task_targetPath, task_type, DateTime.Now);
                              convert.CreateFileJson(informationstask);  // Put json infromation into File   
-                            
+
+                             savedMsg();
                         break;
 
 
@@ -131,68 +112,53 @@ namespace easySave
 
                             Console.WriteLine("\n----------------------------------------------- Execute a specific Task ----------------------------------------------\n ");
 
-                            File task = new File();
-                            Console.WriteLine("\nList of saved Task : \n ");
-                            task.ShowTasksName();
+                            if (System.IO.File.Exists(taskInformationFile) == true)
+                            {
+                                    File task = new File();
+                                    Console.WriteLine("\nList of saved Task : \n ");
+                                    task.ShowTasksName();
 
-                            Console.Write("\nName of the task you want to execute : ");
-                            task_name = Console.ReadLine();
-                           
-                            while( string.IsNullOrEmpty(task_name) )
+                                    Console.Write("\nName of the task you want to execute : ");
+                                    task_name = Console.ReadLine();
+
+                                    while (string.IsNullOrEmpty(task_name))
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.Write("\nThis field are required, please enter a Task name ... ");
+                                        Console.ForegroundColor = ConsoleColor.White;
+                                        Console.Write("\nEnter name of the task you want to execute : ");
+                                        task_name = Console.ReadLine();
+                                    }
+
+                                    while (task.findTaskName(task_name) == false)
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.Write("\nThe task : " + task_name + " doesn't exist ... \n");
+                                        Console.ForegroundColor = ConsoleColor.White;
+                                        Console.Write("\nPlease, enter an existing Task name : ");
+                                        task_name = Console.ReadLine();
+                                    }
+
+                                    CopyFile file = new CopyFile();
+                                    file.specificCopy(task_name);
+
+                                    successMsg();
+                            }
+                            else
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
-                                Console.Write("\nThis field are required, please enter a Task name ... ");
-                                Console.ForegroundColor = ConsoleColor.White;
-                                Console.Write("\nEnter name of the task you want to execute : ");
-                                task_name = Console.ReadLine();
+                                Console.Write("\n There is no saved task \n");
+                                Thread.Sleep(2000);
                             }
 
-                            while ( task.findTaskName(task_name) == false)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.Write("\nThe task : " + task_name + " doesn't exist ... \n");
-                                Console.ForegroundColor = ConsoleColor.White;
-                                Console.Write("\nPlease, enter an existing Task name : ");
-                                task_name = Console.ReadLine();
-                            }
-
-                            CopyFile file = new CopyFile();
-
-
-                            
-
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("\n\n");
-                            Console.WriteLine("\t\t\t ███████╗██╗   ██╗ ██████╗ ██████╗███████╗███████╗███████╗██╗   ██╗██╗");
-                            Console.WriteLine("\t\t\t ██╔════╝██║   ██║██╔════╝██╔════╝██╔════╝██╔════╝██╔════╝██║   ██║██║");    
-                            Console.WriteLine("\t\t\t ███████╗██║   ██║██║     ██║     █████╗  ███████╗█████╗  ██║   ██║██║");
-                            Console.WriteLine("\t\t\t ╚════██║██║   ██║██║     ██║     ██╔══╝  ╚════██║██╔══╝  ██║   ██║██║");
-                            Console.WriteLine("\t\t\t ███████║╚██████╔╝╚██████╗╚██████╗███████╗███████║██║     ╚██████╔╝███████╗");
-                            Console.WriteLine("\t\t\t ╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝╚══════╝╚══════╝╚═╝      ╚═════╝ ╚══════╝ \n");
-
-                            Console.WriteLine("\n\n");
-                            Thread.Sleep(1000);
-                            Console.ForegroundColor = ConsoleColor.White;
-
+                            MenuConsole();
                         break;
 
                         case "3":
-
                                 CopyFile f = new CopyFile();
                                 f.CopyAllTask();
 
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine("\n\n");
-                                Console.WriteLine("███████╗██╗   ██╗ ██████╗ ██████╗███████╗███████╗███████╗██╗   ██╗██╗");
-                                Console.WriteLine("██╔════╝██║   ██║██╔════╝██╔════╝██╔════╝██╔════╝██╔════╝██║   ██║██║");
-                                Console.WriteLine("███████╗██║   ██║██║     ██║     █████╗  ███████╗█████╗  ██║   ██║██║");
-                                Console.WriteLine("╚════██║██║   ██║██║     ██║     ██╔══╝  ╚════██║██╔══╝  ██║   ██║██║");
-                                Console.WriteLine("███████║╚██████╔╝╚██████╗╚██████╗███████╗███████║██║     ╚██████╔╝███████╗");
-                                Console.WriteLine("╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝╚══════╝╚══════╝╚═╝      ╚═════╝ ╚══════╝");
-
-                                Console.WriteLine("\n\n");
-                                Thread.Sleep(1000);
-                                Console.ForegroundColor = ConsoleColor.White;
+                                successMsg();
 
                         break;
 
@@ -201,24 +167,21 @@ namespace easySave
 
                                 File FILE = new File();
                                 FILE.ShowAllTasks();
+
+                                Console.Write("\n- Press 'M' key for startup Menu : ");
+                                string x = Console.ReadLine();
+                                if (x == "m" || x == "M")
+                                {
+                                    MenuConsole();
+                                }
                         break;
+
 
                         case "5":
-
-                                    Console.ForegroundColor = ConsoleColor.Blue;
-                                    Console.WriteLine("\n\n");
-                                    Console.WriteLine("\t\t\t  ██████╗  ██████╗  ██████╗ ██████╗      ██████╗ ██╗   ██╗███████╗    ██╗");
-                                    Console.WriteLine("\t\t\t  ██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗    ██╔══██╗╚██╗ ██╔╝██╔════╝    ██║");
-                                    Console.WriteLine("\t\t\t  ██║  ███╗██║   ██║██║   ██║██║  ██║    ██████╔╝ ╚████╔╝ █████╗      ██║");
-                                    Console.WriteLine("\t\t\t  ██║   ██║██║   ██║██║   ██║██║  ██║    ██╔══██╗  ╚██╔╝  ██╔══╝      ╚═╝");
-                                    Console.WriteLine("\t\t\t  ██████╔╝╚██████╔╝╚██████╔╝██████╔╝     ██████╔╝   ██║   ███████╗    ██╗");
-                                    Console.WriteLine("\t\t\t  ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝      ╚═════╝    ╚═╝   ╚══════╝    ╚═╝");
-                            
-                                    Thread.Sleep(2000);
-                                    Console.ForegroundColor = ConsoleColor.White;
+                                    goodByeMsg();
                                     Environment.Exit(0);
-
                         break;
+
 
                         default:
 
@@ -232,6 +195,86 @@ namespace easySave
 
             } while (options != "4");
             
+        }
+
+
+
+
+
+
+
+        public void easySaveLogo()
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("\n\n\n\n");
+
+            Console.WriteLine("\t\t\t  ███████╗ █████╗ ███████╗██╗   ██╗    ███████╗ █████╗ ██╗   ██╗███████╗ ");
+            Console.WriteLine("\t\t\t  ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝    ██╔════╝██╔══██╗██║   ██║██╔════╝");
+            Console.WriteLine("\t\t\t  █████╗  ███████║███████╗ ╚████╔╝     ███████╗███████║██║   ██║█████╗ ");
+            Console.WriteLine("\t\t\t  ██╔══╝  ██╔══██║╚════██║  ╚██╔╝      ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝  ");
+            Console.WriteLine("\t\t\t  ███████╗██║  ██║███████║   ██║       ███████║██║  ██║ ╚████╔╝ ███████╗");
+            Console.WriteLine("\t\t\t  ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝       ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝");
+
+            Console.WriteLine("\n\t\t\t\t\t\t Welcome to EasySave !  \n");
+
+        }
+
+
+
+
+
+        public void successMsg()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            Console.WriteLine("\n\n");
+            Console.WriteLine("\t\t\t ███████╗██╗   ██╗ ██████╗ ██████╗███████╗███████╗███████╗██╗   ██╗██╗ ");
+            Console.WriteLine("\t\t\t ██╔════╝██║   ██║██╔════╝██╔════╝██╔════╝██╔════╝██╔════╝██║   ██║██║ ");
+            Console.WriteLine("\t\t\t ███████╗██║   ██║██║     ██║     █████╗  ███████╗█████╗  ██║   ██║██║ ");
+            Console.WriteLine("\t\t\t ╚════██║██║   ██║██║     ██║     ██╔══╝  ╚════██║██╔══╝  ██║   ██║██║ ");
+            Console.WriteLine("\t\t\t ███████║╚██████╔╝╚██████╗╚██████╗███████╗███████║██║     ╚██████╔╝███████╗ ");
+            Console.WriteLine("\t\t\t ╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝╚══════╝╚══════╝╚═╝      ╚═════╝ ╚══════╝ ");
+            Console.WriteLine("\n\n");
+
+            Thread.Sleep(1000);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+
+
+        public void savedMsg()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            Console.WriteLine("\n\n");
+            Console.WriteLine("\t\t\t  ████████╗ █████╗ ███████╗██╗  ██╗    ███████╗ █████╗ ██╗   ██╗███████╗██████╗ ");
+            Console.WriteLine("\t\t\t  ╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝    ██╔════╝██╔══██╗██║   ██║██╔════╝██╔══██╗ ");
+            Console.WriteLine("\t\t\t     ██║   ███████║███████╗█████╔╝     ███████╗███████║██║   ██║█████╗  ██║  ██║ ");
+            Console.WriteLine("\t\t\t     ██║   ██╔══██║╚════██║██╔═██╗     ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝  ██║  ██║ ");
+            Console.WriteLine("\t\t\t     ██║   ██║  ██║███████║██║  ██╗    ███████║██║  ██║ ╚████╔╝ ███████╗██████╔╝ ");
+            Console.WriteLine("\t\t\t     ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝    ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═════╝  ");
+            Console.WriteLine("\n\n");
+
+            Thread.Sleep(1000);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+
+
+        public void goodByeMsg()
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+
+            Console.WriteLine("\n\n");
+            Console.WriteLine("\t\t\t  ██████╗  ██████╗  ██████╗ ██████╗      ██████╗ ██╗   ██╗███████╗    ██╗");
+            Console.WriteLine("\t\t\t  ██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗    ██╔══██╗╚██╗ ██╔╝██╔════╝    ██║");
+            Console.WriteLine("\t\t\t  ██║  ███╗██║   ██║██║   ██║██║  ██║    ██████╔╝ ╚████╔╝ █████╗      ██║");
+            Console.WriteLine("\t\t\t  ██║   ██║██║   ██║██║   ██║██║  ██║    ██╔══██╗  ╚██╔╝  ██╔══╝      ╚═╝");
+            Console.WriteLine("\t\t\t  ██████╔╝╚██████╔╝╚██████╔╝██████╔╝     ██████╔╝   ██║   ███████╗    ██╗");
+            Console.WriteLine("\t\t\t  ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝      ╚═════╝    ╚═╝   ╚══════╝    ╚═╝");
+
+            Thread.Sleep(2000);
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
 

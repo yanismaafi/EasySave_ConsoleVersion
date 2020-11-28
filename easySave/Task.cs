@@ -13,7 +13,7 @@ namespace easySave
        public string type;
        public DateTime date;
 
-        public Task(string name, string source, string destination, string type , DateTime Now)
+        public Task (string name, string source, string destination, string type , DateTime Now)
         {
             this.name = name;
             this.source = source;

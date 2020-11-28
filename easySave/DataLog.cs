@@ -1,25 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace easySave
 {
     class DataLog
     {
-        public int FileNumber;
-        public string FileName;
+        public int FileNumber;      public int directoryNumber;
+        public string Name;     
         public long size;
         public DateTime LastAccess;
         public string extention;
 
-        public DataLog(int FileNumber, string FileName, DateTime LastAccess, long size, string extention)  // Data Log constructor 
+
+
+
+        /* DataLog for the File Case */
+
+        public DataLog(int FileNumber, string Name, DateTime LastAccess, long size, string extention)  // Data Log constructor 
         {
             this.FileNumber = FileNumber;
-            this.FileName = FileName;
+            this.Name = Name;
             this.LastAccess = LastAccess;
             this.size = size;
             this.extention = extention;
+        }
 
+
+
+        /* DataLog for the Directory Case */
+
+        public DataLog(int directoryNumber, string Name, DateTime LastAccess, long size)
+        {
+            this.directoryNumber = directoryNumber;
+            this.Name = Name;
+            this.LastAccess = LastAccess;
+            this.size = size;
         }
 
 

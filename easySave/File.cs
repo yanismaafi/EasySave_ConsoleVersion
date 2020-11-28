@@ -8,42 +8,27 @@ namespace easySave
 {
     class File
     {
-
+        public static int nbrFile;
         public string taskInformationFile = "C:\\Users\\ASUS\\Desktop\\Task\\Task's_Details.json";   // Task's Details File path
         public string LogPath = "C:\\Users\\ASUS\\Desktop\\Task\\LogFile.json";     // Log File path
 
 
-        public string getFileContent(string path)
-        {
-            string fileText = System.IO.File.ReadAllText(path);
 
-            return fileText;
+
+        public DataLog extractInformationFile(string file)
+        {
+            nbrFile++;
+
+            string fileName = Path.GetFileName(file);          // Extract all informations about file (size, name, extention ...)
+            string extention = Path.GetExtension(file);
+            long length = new System.IO.FileInfo(file).Length;
+            DateTime lastAccess = System.IO.File.GetLastAccessTime(file);
+
+            DataLog InformationFile = new DataLog(nbrFile, fileName, lastAccess, length, extention);
+
+            return InformationFile;
         }
 
-
-
-        public bool isDifferential(string FilePath)
-        {
-            string[] linesDetailFile = System.IO.File.ReadAllLines(taskInformationFile);
-
-            string path;
-            string type;
-
-            foreach (string line in linesDetailFile)
-            {
-                var data = (JObject)JsonConvert.DeserializeObject(line);
-
-                path = data["source"].Value<string>();
-                type = data["type"].Value<string>();
-
-                if ( string.Compare(path, FilePath) == 0 && type == "Differential")
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
 
 
 
@@ -57,65 +42,53 @@ namespace easySave
             return false;
         }
 
+        
+  
 
-        public bool ExistenceIntoDestination(string fileName ,string destinationPath)    // Verify if file exists into destination
+
+        public string getSpecificTask(string taskName)
         {
-            string file = System.IO.Path.Combine(destinationPath, fileName);
+            string[] informationTask = System.IO.File.ReadAllLines(taskInformationFile);
 
-            if (System.IO.File.Exists(file))
+            foreach(string line in informationTask)
             {
-                return true;
+                var data = (JObject)JsonConvert.DeserializeObject(line);
+                string name = data["name"].Value<string>();
+
+                if (string.Compare(taskName, name) == 0)
+                {
+                    return line;
+                }
             }
 
+            return null;
+        }
+
+
+   
+
+        public bool checkExistenceDirectory(string sourceDirectory, string destination)          //check if directory exist into destination directory
+        {
+            string[] directories = System.IO.Directory.GetDirectories(destination);
+
+            DirectoryInfo dirInfo = new DirectoryInfo(sourceDirectory);
+            string dirname = dirInfo.Name;
+
+            foreach (string directory in directories)
+            {
+                DirectoryInfo dirinfo = new DirectoryInfo(directory);
+                string name = dirinfo.Name;
+
+                if ( string.Compare(name, dirname) == 0 )
+                {
+                    return true;
+                }
+            }
             return false;
         }
 
 
-        public bool taskNameExistence(string taskName)           // Check if a Task Name entred by user exist in taskInformationFile
-        {
-            if( checkExistence(taskInformationFile) == true )
-            {
-                string[] informationTask = System.IO.File.ReadAllLines(taskInformationFile);
-
-                foreach(string line in informationTask)
-                {
-                    var data = (JObject)JsonConvert.DeserializeObject(line);
-                    string name = data["name"].Value<string>();
-
-                    if( string.Compare(taskName, name) ==0 )
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-
-        public bool verifyLength (string fileName, long fileLength ,string destinationPath)    // 
-        {
-            string[] destinationFiles = System.IO.Directory.GetFiles(destinationPath);
-
-            foreach (string file in destinationFiles)
-            {
-                string FName = Path.GetFileName(file);
-
-                if (string.Compare(fileName, FName) == 0)
-                {
-                    long length = new System.IO.FileInfo(file).Length;
-
-                    if (fileLength == length)
-                    {
-                        return true;
-                    }
-                }
-            }
-          return false;
-        }
-
-
-        public bool findTaskName(string taskName)
+        public bool findTaskName(string taskName)     // Check if a Task Name entred by user exist in taskInformationFile
         {
             string[] lines = System.IO.File.ReadAllLines(taskInformationFile);
 
@@ -155,7 +128,7 @@ namespace easySave
 
             }
 
-           return "Error";
+           return null;
         }
 
 
@@ -179,7 +152,7 @@ namespace easySave
 
             }
 
-            return "Error";
+            return null;
         }
 
 
