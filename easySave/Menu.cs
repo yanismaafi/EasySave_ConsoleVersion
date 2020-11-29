@@ -17,8 +17,6 @@ namespace easySave
 
         public void MenuConsole()
         {
-                Console.ForegroundColor = ConsoleColor.White;
-
                 string options;
                 string task_name;
                 string task_sourcePath;
@@ -27,8 +25,11 @@ namespace easySave
                 int typeOftask;
 
             do {
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                    Console.Clear();
+
                     easySaveLogo();
-                    Console.ForegroundColor = ConsoleColor.White;
+
 
                     Console.WriteLine("\n 1- Create a task \n");
                     Console.WriteLine("\n 2- Execute a specific Task \n");
@@ -43,8 +44,8 @@ namespace easySave
 
                         case "1":
 
-                            Console.ForegroundColor = ConsoleColor.White;
-                            Console.WriteLine("\n\n ------------------------------------ Create a new task ----------------------------------------  \n");
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            Console.WriteLine("\n\n ---------------------------------------------- Create a new task ---------------------------------------------  \n");
                             Console.Write("\n Enter your task name : ");
                            
                             task_name = Console.ReadLine();
@@ -54,7 +55,7 @@ namespace easySave
 
                             while( System.IO.Directory.Exists(task_sourcePath) != true )
                             {
-                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
                                 Console.Write("\n Invalid source path, please try again  ");
                                 Console.ResetColor();
 
@@ -67,7 +68,7 @@ namespace easySave
 
                             while (System.IO.Directory.Exists(task_targetPath) != true)
                             {
-                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
                                 Console.Write("\n Invalid destination path, please try again ! ");
                                 Console.ResetColor();
                                 Console.Write("\n Enter the destination path of the directory you want to copy :  ");
@@ -123,18 +124,18 @@ namespace easySave
 
                                     while (string.IsNullOrEmpty(task_name))
                                     {
-                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.ForegroundColor = ConsoleColor.DarkRed;
                                         Console.Write("\nThis field are required, please enter a Task name ... ");
-                                        Console.ForegroundColor = ConsoleColor.White;
+                                        Console.ForegroundColor = ConsoleColor.Black;
                                         Console.Write("\nEnter name of the task you want to execute : ");
                                         task_name = Console.ReadLine();
                                     }
 
                                     while (task.findTaskName(task_name) == false)
                                     {
-                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.ForegroundColor = ConsoleColor.DarkRed;
                                         Console.Write("\nThe task : " + task_name + " doesn't exist ... \n");
-                                        Console.ForegroundColor = ConsoleColor.White;
+                                        Console.ForegroundColor = ConsoleColor.Black;
                                         Console.Write("\nPlease, enter an existing Task name : ");
                                         task_name = Console.ReadLine();
                                     }
@@ -146,7 +147,7 @@ namespace easySave
                             }
                             else
                             {
-                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
                                 Console.Write("\n There is no saved task \n");
                                 Thread.Sleep(2000);
                             }
@@ -168,7 +169,8 @@ namespace easySave
                                 File FILE = new File();
                                 FILE.ShowAllTasks();
 
-                                Console.Write("\n- Press 'M' key for startup Menu : ");
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            Console.Write("\n- Press 'M' key for startup Menu : ");
                                 string x = Console.ReadLine();
                                 if (x == "m" || x == "M")
                                 {
@@ -185,9 +187,9 @@ namespace easySave
 
                         default:
 
-                                 Console.ForegroundColor = ConsoleColor.Red;
+                                 Console.ForegroundColor = ConsoleColor.DarkRed;
                                  Console.WriteLine(" \n Invalid Input, please choose between 1 and 4 \n ");
-                                 Console.ForegroundColor = ConsoleColor.White;
+                                 Console.ForegroundColor = ConsoleColor.Black;
                                  Thread.Sleep(2000);
 
                         break;
@@ -204,7 +206,7 @@ namespace easySave
 
         public void easySaveLogo()
         {
-            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine("\n\n\n\n");
 
             Console.WriteLine("\t\t\t  ███████╗ █████╗ ███████╗██╗   ██╗    ███████╗ █████╗ ██╗   ██╗███████╗ ");
@@ -216,15 +218,15 @@ namespace easySave
 
             Console.WriteLine("\n\t\t\t\t\t\t Welcome to EasySave !  \n");
 
+            Console.ForegroundColor = ConsoleColor.Black;
+
         }
-
-
 
 
 
         public void successMsg()
         {
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
 
             Console.WriteLine("\n\n");
             Console.WriteLine("\t\t\t ███████╗██╗   ██╗ ██████╗ ██████╗███████╗███████╗███████╗██╗   ██╗██╗ ");
@@ -236,14 +238,14 @@ namespace easySave
             Console.WriteLine("\n\n");
 
             Thread.Sleep(1000);
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
         }
 
 
 
         public void savedMsg()
         {
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
 
             Console.WriteLine("\n\n");
             Console.WriteLine("\t\t  ████████╗ █████╗ ███████╗██╗  ██╗    ███████╗ █████╗ ██╗   ██╗███████╗██████╗ ");
@@ -255,14 +257,14 @@ namespace easySave
             Console.WriteLine("\n\n");
 
             Thread.Sleep(1000);
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
         }
 
 
 
         public void goodByeMsg()
         {
-            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
 
             Console.WriteLine("\n\n");
             Console.WriteLine("\t\t\t  ██████╗  ██████╗  ██████╗ ██████╗      ██████╗ ██╗   ██╗███████╗    ██╗");
@@ -273,7 +275,7 @@ namespace easySave
             Console.WriteLine("\t\t\t  ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝      ╚═════╝    ╚═╝   ╚══════╝    ╚═╝");
 
             Thread.Sleep(2000);
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
         }
 
 
