@@ -214,7 +214,6 @@ namespace easySave
 
                 if (System.IO.Directory.GetDirectories(sourcePath).Length > 0)  // Check if source path contain Sub Directory
                 {
-                    Console.WriteLine("yeeeeps");
                     string[] sourceDirectories = System.IO.Directory.GetDirectories(sourcePath);  //Get all source's Directories ( case if we have a sub directory)
 
                     foreach (string directory in sourceDirectories)
