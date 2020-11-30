@@ -11,7 +11,7 @@ namespace easySave
        public string source;
        public string destination;
        public string type;
-       public DateTime date;
+       public DateTime created_at;
 
         public Task (string name, string source, string destination, string type , DateTime Now)
         {
@@ -19,7 +19,7 @@ namespace easySave
             this.source = source;
             this.destination = destination;
             this.type = type;
-            this.date = Now;
+            this.created_at = Now;
         }
     }
 

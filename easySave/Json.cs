@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -26,7 +27,7 @@ namespace easySave
 
         public void CreateFileJson (string information)       // Create json File and write json content (information's about the job)
         {
-            string path = "C:\\EasySave\\Task's_Details.json";
+            string path = ConfigurationManager.AppSettings.Get("taskInformationFile");   // Task's Details File path
 
             File file = new File();
 

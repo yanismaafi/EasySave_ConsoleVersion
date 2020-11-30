@@ -30,16 +30,16 @@ namespace easySave
 
 
 
-        public DataLog extractInformationDirectory(string directory)
+        public DataLog extractInformationDirectory(string directory, string taskName)
         {
-            nbrDir++;
+
             DirectoryInfo dirInfo = new DirectoryInfo(directory);
             string dirName = dirInfo.Name;
             string dirExtention = dirInfo.Extension;
             DateTime dirLastAcess = dirInfo.LastAccessTime;
             long size = getDirectorySize(directory);
 
-            DataLog InformationDirectory = new DataLog(nbrDir, dirName, dirLastAcess, size);   // Convert the Directory's information to Json
+            DataLog InformationDirectory = new DataLog(taskName, dirName, dirLastAcess, size);   // Convert the Directory's information to Json
 
             return InformationDirectory;
         }

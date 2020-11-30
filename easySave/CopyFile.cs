@@ -6,29 +6,26 @@ using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
+using System.Configuration;
 
 namespace easySave
 {
     class CopyFile
     {
 
-        public static int nbrFile;
-        public static int nbrDir;
 
-        public string LogPath = "C:\\EasySave\\LogFile.json";         // Log File path
-        public string taskInformationFile = "C:\\EasySave\\Task's_Details.json";   // Log Task's details File
+        public string taskInformationFile = ConfigurationManager.AppSettings.Get("taskInformationFile");   // Task's Details File path
+        public string LogPath = ConfigurationManager.AppSettings.Get("LogPath");    // Log File path
 
 
 
-
-
-        public void completeCopy(string sourcePath, string destPath)      // This Copy method is used for the Complete Save Type
+        public void completeCopy(string sourcePath, string destPath, string taskName)      // This Copy method is used for the Complete Save Type
         {
             var timer = new Stopwatch();       // Calculate Copy Time 
             timer.Start();
 
             FileSystem.CopyDirectory(sourcePath, destPath, UIOption.AllDialogs);           // Copy all source files from source to destination  (complete save)
-            completeLog(sourcePath);
+            completeLog(sourcePath, taskName);
 
             timer.Stop();
             
@@ -55,6 +52,7 @@ namespace easySave
                 { 
                     var data = (JObject)JsonConvert.DeserializeObject(line);                  // Deserialize line 
 
+                    string taskName = data["name"].Value<string>();
                     string source = data["source"].Value<string>();
                     string destination = data["destination"].Value<string>();                  // Get the value of source, destination and type
                     string type = data["type"].Value<string>();
@@ -62,10 +60,10 @@ namespace easySave
 
                     if ( type == "Differential" )                                       // Check the type of save
                     {
-                        differentialCopy(source, destination);
+                        differentialCopy(source, destination, taskName);
                     }else
                     {
-                        completeCopy(source, destination);       // Do the Complete Copy
+                        completeCopy(source, destination, taskName);       // Do the Complete Copy
                     }
                 }
             }else
@@ -78,7 +76,7 @@ namespace easySave
         
 
 
-       public void differentialCopy(string sourcePath , string destinationPath)
+       public void differentialCopy(string sourcePath , string destinationPath, string taskName)
         {
             if( System.IO.Directory.Exists(sourcePath) == true )  // Check if source path is a Directory
             {
@@ -110,7 +108,7 @@ namespace easySave
                                         System.IO.File.Copy(sfile, dfile, true);   // Do the copy with true parametre for overwrite
 
                                         File F = new File();
-                                        DataLog information = F.extractInformationFile(sfile);
+                                        DataLog information = F.extractInformationFile(sfile, taskName);
                                         writeOnLogFile(information);             // Write on LogFile
                                     }
                                 }
@@ -121,10 +119,10 @@ namespace easySave
                                 string srcname = System.IO.Path.GetFileName(sfile);
                                 string destination = System.IO.Path.Combine(destinationPath, srcname);
 
-                               System.IO.File.Copy(sfile, destination, true);   
+                                System.IO.File.Copy(sfile, destination, true);   
 
                                 File F = new File();
-                                DataLog information = F.extractInformationFile(sfile);   // Do the copy with true parametre for overwrite
+                                DataLog information = F.extractInformationFile(sfile, taskName);   // Do the copy with true parametre for overwrite
                                 writeOnLogFile(information);   // Write on LogFile
                             }
 
@@ -141,7 +139,7 @@ namespace easySave
                             System.IO.File.Copy(file, destination, true);
 
                             File F = new File();
-                            DataLog information = F.extractInformationFile(file);   // Do the copy with true parametre for overwrite
+                            DataLog information = F.extractInformationFile(file, taskName);   // Do the copy with true parametre for overwrite
                             writeOnLogFile(information);   // Write on LogFile
                         }
                     }
@@ -158,7 +156,7 @@ namespace easySave
                         string dirName = dirInfo.Name;
                         string destinationDir = System.IO.Path.Combine(destinationPath, dirName);
 
-                        differentialCopy(srcdirectory, destinationDir);  // Do the recursivity for files and sub directory 
+                        differentialCopy(srcdirectory, destinationDir, taskName);  // Do the recursivity for files and sub directory 
                     }
                 }
             }
@@ -183,17 +181,17 @@ namespace easySave
 
                 if (type == "Complete")
                 {
-                    completeCopy(source, destination);
+                    completeCopy(source, destination, taskName);
                 
                 }else if (type == "Differential")
                 {
-                    differentialCopy(source, destination);
+                    differentialCopy(source, destination, taskName);
                 }
             }
         }
 
 
-        public void completeLog (string sourcePath)  
+        public void completeLog (string sourcePath,string taskName)  
         {
 
             if(System.IO.Directory.Exists(sourcePath) == true)   // First check if source Path is Directory
@@ -205,7 +203,7 @@ namespace easySave
                     foreach (string file in sourceFiles)   // Loop on source Files (file by file)
                     {
                         File F = new File();
-                        DataLog InformationFile = F.extractInformationFile(file);   //Extract file's information
+                        DataLog InformationFile = F.extractInformationFile(file,taskName);   //Extract file's information
 
                         writeOnLogFile(InformationFile);   //Write on the Log file the informations
                     }
@@ -220,10 +218,10 @@ namespace easySave
                     {
                         Directory dir = new Directory();
 
-                        DataLog InformationDirectory = dir.extractInformationDirectory(directory);
+                        DataLog InformationDirectory = dir.extractInformationDirectory(directory, taskName);
                         writeOnLogFile(InformationDirectory);   // Write on the LogFile the Directory informations
 
-                        completeLog(directory);      // We call the method for recursivity sub sub ... directory and their files 
+                        completeLog(directory, taskName);      // We call the method for recursivity sub sub ... directory and their files 
                     }
 
                 }

@@ -1,35 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using System.Drawing;
 using System.Threading;
+using System.Configuration;
 
 namespace easySave
 {
     class Menu
-    {
+    { 
 
-         public string taskInformationFile = "C:\\EasySave\\Task's_Details.json";    // Log Task's details File
-
+         public string taskInformationFile = ConfigurationManager.AppSettings.Get("taskInformationFile");   // Task's Details File path   // Log Task's details File
+         public string EasySave = ConfigurationManager.AppSettings.Get("EasySave");  // EasySave Directory 
 
 
 
         public void MenuConsole()
         {
-                string options;
-                string task_name;
-                string task_sourcePath;
-                string task_targetPath;
-                string task_type = string.Empty;
-                int typeOftask;
 
-            do {
+                    string options;
+                    string task_name;
+                    string task_sourcePath;
+                    string task_targetPath;
+                    string task_type = string.Empty;
+                    int typeOftask;
+
+                    EasySaveExistence();
+
+  
                     Console.BackgroundColor = ConsoleColor.Gray;
                     Console.Clear();
 
                     easySaveLogo();
-
+                    BeepMelody();
 
                     Console.WriteLine("\n 1- Create a task \n");
                     Console.WriteLine("\n 2- Execute a specific Task \n");
@@ -38,11 +39,12 @@ namespace easySave
                     Console.WriteLine("\n 5- Exit \n");
 
                     options = Console.ReadLine();
+
                    
                     switch (options)
                     {
 
-                        case "1":
+                        case "1":   // Case Create a Task
 
                             Console.ForegroundColor = ConsoleColor.Black;
                             Console.WriteLine("\n\n ---------------------------------------------- Create a new task ---------------------------------------------  \n");
@@ -56,8 +58,8 @@ namespace easySave
                             while( System.IO.Directory.Exists(task_sourcePath) != true )
                             {
                                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                                Console.Write("\n Invalid source path, please try again  ");
-                                Console.ResetColor();
+                                Console.Write("\n Invalid source path, please try again  \n");
+                                Console.ForegroundColor = ConsoleColor.Black;
 
                                 Console.Write("\n Enter the source path of the directory :  ");
                                 task_sourcePath = Console.ReadLine();
@@ -69,13 +71,13 @@ namespace easySave
                             while (System.IO.Directory.Exists(task_targetPath) != true)
                             {
                                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                                Console.Write("\n Invalid destination path, please try again ! ");
+                                Console.Write("\n Invalid destination path, please try again ! \n");
                                 Console.ResetColor();
                                 Console.Write("\n Enter the destination path of the directory you want to copy :  ");
                                 task_targetPath = Console.ReadLine();
                             }
 
-                            Console.WriteLine("\n Enter the type of the task \n <1>: Complete. \n <2>: Differential : ");
+                            Console.WriteLine("\n Enter the type of Backup : \n\n 1- Complete \n\n 2- Differential \n");
                            
                             do
                             {
@@ -106,15 +108,18 @@ namespace easySave
                              convert.CreateFileJson(informationstask);  // Put json infromation into File   
 
                              savedMsg();
+
+                             MenuConsole();
                         break;
 
 
-                        case "2":
+                        case "2":   // Case Execute a specific Task
 
-                            Console.WriteLine("\n----------------------------------------------- Execute a specific Task ----------------------------------------------\n ");
-
-                            if (System.IO.File.Exists(taskInformationFile) == true)
+                            if ( System.IO.File.Exists(taskInformationFile) && new FileInfo(taskInformationFile).Length != 0 )
                             {
+
+                                    Console.WriteLine("\n----------------------------------------------- Execute a specific Task ----------------------------------------------\n ");
+
                                     File task = new File();
                                     Console.WriteLine("\nList of saved Task : \n ");
                                     task.ShowTasksName();
@@ -155,22 +160,33 @@ namespace easySave
                             MenuConsole();
                         break;
 
-                        case "3":
-                                CopyFile f = new CopyFile();
-                                f.CopyAllTask();
+                        case "3":   //Cas Execute all Task
+                                
+                                if ( System.IO.File.Exists(taskInformationFile) && new FileInfo(taskInformationFile).Length != 0 )
+                                {
+                                    CopyFile f = new CopyFile();
+                                    f.CopyAllTask();
+                                    successMsg();
 
-                                successMsg();
+                                }else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("\n There is no saved task");
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                    Thread.Sleep(2000);
+                                }
 
+                                MenuConsole();
                         break;
 
 
-                        case "4":
+                        case "4":       // Case Show my saved Tasks
 
                                 File FILE = new File();
                                 FILE.ShowAllTasks();
 
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            Console.Write("\n- Press 'M' key for startup Menu : ");
+                                Console.ForegroundColor = ConsoleColor.Black;
+                                Console.Write("\n- Press 'M' key for startup Menu : ");
                                 string x = Console.ReadLine();
                                 if (x == "m" || x == "M")
                                 {
@@ -181,6 +197,7 @@ namespace easySave
 
                         case "5":
                                     goodByeMsg();
+                                    BeepMelody();
                                     Environment.Exit(0);
                         break;
 
@@ -188,14 +205,14 @@ namespace easySave
                         default:
 
                                  Console.ForegroundColor = ConsoleColor.DarkRed;
-                                 Console.WriteLine(" \n Invalid Input, please choose between 1 and 4 \n ");
+                                 Console.WriteLine(" \n Invalid Input, please choose between 1 and 5 \n ");
                                  Console.ForegroundColor = ConsoleColor.Black;
                                  Thread.Sleep(2000);
-
+                                 MenuConsole();
                         break;
                     }
 
-            } while (options != "4");
+            
             
         }
 
@@ -277,6 +294,38 @@ namespace easySave
             Thread.Sleep(2000);
             Console.ForegroundColor = ConsoleColor.Black;
         }
+        
+
+
+        public void BeepMelody()
+        {
+            for (int j = 1; j < 5; j++)
+            {
+                Console.Beep(500 * j, 200);
+            }
+            Console.Beep(1500, 200);
+            Console.Beep(1500, 200);
+        }
+
+        public void EasySaveExistence()
+        {
+            if (System.IO.Directory.Exists(EasySave) == false)   // Check if EasySave directory exist 
+            {
+                try
+                {
+                    System.IO.Directory.CreateDirectory(EasySave);  // create it if not 
+
+                }
+                catch (Exception e)
+                {
+                    Console.BackgroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("\n" + e);
+                    Console.BackgroundColor = ConsoleColor.Black;
+                }
+            }
+        }
+
+
 
 
     }
