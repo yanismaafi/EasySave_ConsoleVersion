@@ -8,8 +8,10 @@ namespace easySave
         {
 
             Menu console = new Menu();
+            console.BeepMelody();
+
             Console.Title = "Easy Save";
-           
+       
             console.MenuConsole();
         }
     }

@@ -19,27 +19,75 @@ namespace easySave
 
 
 
-        public void completeCopy(string sourcePath, string destPath, string taskName)      // This Copy method is used for the Complete Save Type
+        public void completeCopy(string sourcePath, string destination, string taskName)
         {
-            var timer = new Stopwatch();       // Calculate Copy Time 
-            timer.Start();
 
-            FileSystem.CopyDirectory(sourcePath, destPath, UIOption.AllDialogs);           // Copy all source files from source to destination  (complete save)
-            completeLog(sourcePath, taskName);
-
-            timer.Stop();
-            
-
-            for (int i = 0; i <= ( timer.ElapsedMilliseconds * 0.001 ); i++)
+            if (System.IO.Directory.Exists(sourcePath) == true)   // First check if source Path is Directory
             {
-                Console.Write($"\r PROGRESS : {i} %  ");       // Progress Bar
-                Thread.Sleep(5);
+                if (System.IO.Directory.GetFiles(sourcePath).Length > 0)  // Check if the source Path contain files
+                {
+                    string[] sourceFiles = System.IO.Directory.GetFiles(sourcePath);    // Get all source Files
+
+                    foreach (string file in sourceFiles)   // Loop on source Files (file by file)
+                    {
+                        File F = new File();
+                        DataLog InformationFile = F.extractInformationFile(file, taskName);   //Extract file's information
+
+                        string desFileName = System.IO.Path.GetFileName(file);
+                        string destFile = System.IO.Path.Combine(destination, desFileName);
+
+                        var timer = new Stopwatch();       // Calculate Copy Time 
+                        timer.Start();
+
+                        System.IO.File.Copy(file, destFile, true);   // Do copy 
+
+                        timer.Stop();
+
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.WriteLine("File copied : " + file);
+                        Thread.Sleep((int)timer.ElapsedMilliseconds);
+                        Console.ForegroundColor = ConsoleColor.Black;
+
+                        writeOnLogFile(InformationFile);   //Write on the Log file the informations
+                    }
+                }
+
+
+                if (System.IO.Directory.GetDirectories(sourcePath).Length > 0)  // Check if source path contain Sub Directory
+                {
+                    string[] sourceDirectories = System.IO.Directory.GetDirectories(sourcePath);  //Get all source's Directories ( case if we have a sub directory)
+
+                    foreach (string directory in sourceDirectories)
+                    {
+                        Directory dir = new Directory();
+                        DataLog InformationDirectory = dir.extractInformationDirectory(directory, taskName);
+
+
+                        DirectoryInfo dirInfo = new DirectoryInfo(directory);
+                        string dirName = dirInfo.Name;   // Get name of directory
+
+                        string destDirectory = System.IO.Path.Combine(destination, dirName);
+                        System.IO.Directory.CreateDirectory(destDirectory);   // Create the directory 
+
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.WriteLine("Directory copied :" + directory);
+                        Console.ForegroundColor = ConsoleColor.Black;
+
+                        writeOnLogFile(InformationDirectory);   // Write on the LogFile the Directory informations
+
+
+                        completeCopy(directory, destDirectory, taskName);      // We call the method for recursivity sub sub ... directory and their files 
+                    }
+
+                }
+
             }
         }
-     
 
 
-        
+
+
+
         public void CopyAllTask()
         {
             File File = new File();
@@ -164,6 +212,7 @@ namespace easySave
 
 
 
+
         public void specificCopy(string taskName)
         {
             File file = new File();
@@ -189,6 +238,8 @@ namespace easySave
                 }
             }
         }
+
+
 
 
         public void completeLog (string sourcePath,string taskName)  
@@ -228,6 +279,8 @@ namespace easySave
 
             }
         }
+
+
 
 
 

@@ -30,7 +30,7 @@ namespace easySave
                     Console.Clear();
 
                     easySaveLogo();
-                    BeepMelody();
+                    
 
                     Console.WriteLine("\n 1- Create a task \n");
                     Console.WriteLine("\n 2- Execute a specific Task \n");
