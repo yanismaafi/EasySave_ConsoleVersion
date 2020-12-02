@@ -27,6 +27,15 @@ namespace easySave
                 if (System.IO.Directory.GetFiles(sourcePath).Length > 0)  // Check if the source Path contain files
                 {
                     string[] sourceFiles = System.IO.Directory.GetFiles(sourcePath);    // Get all source Files
+                    int nbrFiles = System.IO.Directory.GetFiles(sourcePath).Length;     // Get nbr of Files
+                   
+                    Directory dir = new Directory();
+                    long sizeFiles = dir.getDirectorySize(sourcePath);                  // Get size of files
+                    bool state = false;
+
+                    int Progression = 100 * (1 - (nbrFiles / System.IO.Directory.GetFiles(sourcePath).Length)); //Calculate the progression
+                    State stateInfo = new State(taskName, DateTime.Now, sourcePath, destination, nbrFiles, sizeFiles, Progression, state);
+                    stateInfo.writeOnStateFile(stateInfo);
 
                     foreach (string file in sourceFiles)   // Loop on source Files (file by file)
                     {
@@ -36,12 +45,19 @@ namespace easySave
                         string desFileName = System.IO.Path.GetFileName(file);
                         string destFile = System.IO.Path.Combine(destination, desFileName);
 
+
                         var timer = new Stopwatch();       // Calculate Copy Time 
                         timer.Start();
 
                         System.IO.File.Copy(file, destFile, true);   // Do copy 
+                        state = true;
 
                         timer.Stop();
+
+                        nbrFiles--;
+                        sizeFiles = sizeFiles - (new System.IO.FileInfo(file).Length);
+
+
 
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
                         Console.WriteLine("File copied : " + file);
@@ -49,7 +65,14 @@ namespace easySave
                         Console.ForegroundColor = ConsoleColor.Black;
 
                         writeOnLogFile(InformationFile);   //Write on the Log file the informations
+
+                        
                     }
+
+                     Progression = 100 * (1 - (nbrFiles / System.IO.Directory.GetFiles(sourcePath).Length)); //Calculate the progression
+                     stateInfo = new State(taskName, DateTime.Now, sourcePath, destination, nbrFiles, sizeFiles, Progression, state);
+                     stateInfo.writeOnStateFile(stateInfo);
+
                 }
 
 

@@ -170,7 +170,7 @@ namespace easySave
 
                                 }else
                                 {
-                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.ForegroundColor = ConsoleColor.DarkRed;
                                     Console.WriteLine("\n There is no saved task");
                                     Console.ForegroundColor = ConsoleColor.White;
                                     Thread.Sleep(2000);
@@ -188,10 +188,15 @@ namespace easySave
                                 Console.ForegroundColor = ConsoleColor.Black;
                                 Console.Write("\n- Press 'M' key for startup Menu : ");
                                 string x = Console.ReadLine();
-                                if (x == "m" || x == "M")
+
+                                while (x != "m" && x != "M")
                                 {
-                                    MenuConsole();
+                                  Console.Write("\n- Press 'M' key for startup Menu : ");
+                                  x = Console.ReadLine();
                                 }
+
+                                MenuConsole();
+                                
                         break;
 
 
